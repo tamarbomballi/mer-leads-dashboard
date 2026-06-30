@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MER Group — Leads Dashboard</title>
+<style>
+  :root{
+    --navy-deep:#0A1530;
+    --navy:#122247;
+    --navy-soft:#1B2D5A;
+    --violet:#583F98;
+    --violet-light:#917AE6;
+    --cyan:#00B7FA;
+    --green:#00D67E;
+    --mute:#98A2B3;
+    --hairline:#23335C;
+    --paper:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--navy-deep);
+    color:var(--paper);
+    font-family:'Segoe UI', Arial, Helvetica, sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1240px;margin:0 auto;padding:32px 28px 64px;}
+  header{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:16px;border-bottom:1px solid var(--hairline);padding-bottom:20px;margin-bottom:28px;}
+  .brand-eyebrow{color:var(--cyan);letter-spacing:.14em;text-transform:uppercase;font-size:12px;font-weight:600;margin:0 0 6px;}
+  h1{margin:0;font-size:28px;font-weight:700;color:var(--paper);}
+  .meta{color:var(--mute);font-size:13px;text-align:right;line-height:1.5;}
+  .meta b{color:var(--paper);}
+
+  .kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:28px;}
+  .kpi{background:var(--navy);border:1px solid var(--hairline);border-radius:10px;padding:18px 18px 16px;}
+  .kpi .num{font-size:30px;font-weight:700;color:var(--paper);line-height:1;}
+  .kpi .num.accent{color:var(--green);}
+  .kpi .label{margin-top:6px;color:var(--mute);font-size:12.5px;}
+
+  .grid{display:grid;grid-template-columns:1.3fr 1fr;gap:18px;margin-bottom:18px;}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;margin-bottom:18px;}
+  .card{background:var(--navy);border:1px solid var(--hairline);border-radius:10px;padding:20px 22px;}
+  .card h2{margin:0 0 4px;font-size:15px;font-weight:600;color:var(--paper);}
+  .card .sub{margin:0 0 16px;font-size:12px;color:var(--mute);}
+
+  .bar-list{display:flex;flex-direction:column;gap:11px;}
+  .bar-row{display:grid;grid-template-columns:120px 1fr 36px;align-items:center;gap:10px;font-size:13px;}
+  .bar-row .name{color:var(--paper);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .bar-track{background:var(--navy-soft);border-radius:6px;height:11px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:6px;}
+  .bar-row .val{color:var(--mute);text-align:right;font-size:12.5px;}
+
+  .donut-wrap{display:flex;align-items:center;gap:22px;flex-wrap:wrap;}
+  .donut-legend{display:flex;flex-direction:column;gap:7px;font-size:12.5px;flex:1;min-width:140px;}
+  .legend-row{display:flex;align-items:center;gap:8px;color:var(--paper);}
+  .legend-row .dot{width:10px;height:10px;border-radius:3px;flex-shrink:0;}
+  .legend-row .lname{flex:1;color:var(--mute);}
+  .legend-row .lval{color:var(--paper);font-weight:600;}
+
+  footer{margin-top:24px;color:var(--mute);font-size:11.5px;text-align:center;}
+  @media (max-width:900px){
+    .kpi-row{grid-template-columns:repeat(2,1fr);}
+    .grid, .grid3{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div>
+      <p class="brand-eyebrow">MER Group · Marketing</p>
+      <h1>Leads Dashboard</h1>
+    </div>
+    <div class="meta">
+      Snapshot generated <b id="genDate"></b><br>
+      Source: Microsoft Lists export (Book1.xlsx)
+    </div>
+  </header>
+
+  <div class="kpi-row" id="kpiRow"></div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Leads by Country</h2>
+      <p class="sub">Top 10 markets, by lead count</p>
+      <div class="bar-list" id="countryList"></div>
+    </div>
+    <div class="card">
+      <h2>Lead Priority</h2>
+      <p class="sub">Sales-rated priority across all leads</p>
+      <div class="donut-wrap">
+        <svg id="priorityDonut" width="160" height="160" viewBox="0 0 160 160"></svg>
+        <div class="donut-legend" id="priorityLegend"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Source of Leads</h2>
+      <p class="sub">Where leads are coming from</p>
+      <div class="bar-list" id="sourceList"></div>
+    </div>
+    <div class="card">
+      <h2>Lead Owner Workload</h2>
+      <p class="sub">Top 10 by assigned lead count</p>
+      <div class="bar-list" id="ownerList"></div>
+    </div>
+  </div>
+
+  <div class="grid3">
+    <div class="card">
+      <h2>Top Campaigns</h2>
+      <p class="sub">Lead volume by named campaign</p>
+      <div class="bar-list" id="campaignList"></div>
+    </div>
+    <div class="card">
+      <h2>Relation Type</h2>
+      <p class="sub">Where known</p>
+      <div class="donut-wrap" style="flex-direction:column;align-items:flex-start;">
+        <svg id="relationDonut" width="130" height="130" viewBox="0 0 130 130"></svg>
+        <div class="donut-legend" id="relationLegend" style="width:100%;"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Data Completeness</h2>
+      <p class="sub">Fields filled across the list</p>
+      <div class="bar-list" id="completeList"></div>
+    </div>
+  </div>
+
+  <footer>Built from a manual export — refresh by sending an updated Microsoft Lists export.</footer>
+</div>
+
+<script>
+const DATA = {"total": 371, "assigned": 94, "unassigned": 277, "with_country": 325, "with_industry": 125, "country": {"Greece": 64, "Unknown": 46, "Israel": 34, "Romania": 25, "Poland": 20, "Germany": 18, "Cyprus": 18, "France": 17, "Chile": 16, "Italy": 9}, "country_other": 104, "source": {"Unspecified": 184, "Tradeshow": 146, "Website Form": 30, "LinkedIn Campaign": 11}, "campaign": {"No campaign": 189, "Eurosatory": 125, "Civilian Security Conference": 17, "Mining-Chile-LinkedIn-V2": 9, "Telecom EN \u2013 Shay Haas": 5, "Defense EN \u2013 Kobi Sahar": 5, "MuniExpo Tel Aviv 2026": 4, "Telecom ES \u2013 Menachem Cohen + Isabel Tlapa": 3}, "priority": {"1 very hot": 38, "2 hot": 37, "3 meddium": 31, "4 cold": 23, "5 Very cold": 15, "6 Undefined": 86, "Unspecified": 141}, "owners": {"Shay Haas": 65, "Kobi Sahar": 30, "Hagay Kimel": 14, "Tal David": 13, "Ra\u00fal Pe\u00f1ailillo": 11, "Itzhak Schwartz": 8, "Sol Israelson": 6, "Menahem Cohen": 6, "Amit Livni": 4, "Isabel Tlapa": 3}, "relation": {"Unspecified": 294, "1 Client": 40, "4 Provider": 21, "2 System integrator": 7, "3 Partner": 7, "5 Competitor": 2}, "industry": {"Defense Electronics": 4, "Sensors / Detection": 3, "Armored Vehicles": 3, "Communications": 2, "AI / Counter-UAS": 2, "Counter-Drone / C-UAS": 2, "Defense Technology": 2, "Technology": 2}, "generated": "2026-06-30"};
+document.getElementById('genDate').textContent = new Date().toLocaleDateString('en-GB', {day:'numeric', month:'long', year:'numeric'});
+
+const c = {violet:'#583F98', violetLight:'#917AE6', cyan:'#00B7FA', green:'#00D67E', mute:'#475467', soft:'#1B2D5A'};
+
+function barList(containerId, obj, color, opts={}){
+  const max = Math.max(...Object.values(obj));
+  const el = document.getElementById(containerId);
+  el.innerHTML = Object.entries(obj).map(([name,count])=>{
+    const fillColor = (opts.colorFn ? opts.colorFn(name) : color);
+    return `<div class="bar-row">
+      <div class="name" title="${name}">${name}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${(count/max*100).toFixed(0)}%; background:${fillColor}"></div></div>
+      <div class="val">${count}</div>
+    </div>`;
+  }).join('');
+}
+
+function donut(svgId, legendId, obj, colors){
+  const svg = document.getElementById(svgId);
+  const size = svg.viewBox.baseVal.width;
+  const r = size/2 - 14;
+  const cx = size/2, cy = size/2;
+  const total = Object.values(obj).reduce((a,b)=>a+b,0);
+  let angleStart = -90;
+  let paths = '';
+  const keys = Object.keys(obj);
+  keys.forEach((k,i)=>{
+    const val = obj[k];
+    const angle = (val/total)*360;
+    const angleEnd = angleStart + angle;
+    const largeArc = angle > 180 ? 1 : 0;
+    const x1 = cx + r*Math.cos(angleStart*Math.PI/180);
+    const y1 = cy + r*Math.sin(angleStart*Math.PI/180);
+    const x2 = cx + r*Math.cos(angleEnd*Math.PI/180);
+    const y2 = cy + r*Math.sin(angleEnd*Math.PI/180);
+    paths += `<path d="M${cx},${cy} L${x1},${y1} A${r},${r} 0 ${largeArc} 1 ${x2},${y2} Z" fill="${colors[i % colors.length]}" stroke="#122247" stroke-width="2"/>`;
+    angleStart = angleEnd;
+  });
+  const holeR = r*0.55;
+  svg.innerHTML = paths + `<circle cx="${cx}" cy="${cy}" r="${holeR}" fill="#122247"/>`;
+  document.getElementById(legendId).innerHTML = keys.map((k,i)=>`
+    <div class="legend-row"><span class="dot" style="background:${colors[i % colors.length]}"></span><span class="lname">${k}</span><span class="lval">${obj[k]}</span></div>
+  `).join('');
+}
+
+// KPIs
+const kpis = [
+  {num: DATA.total, label:'Total leads', accent:true},
+  {num: DATA.assigned, label:'Assigned to an owner'},
+  {num: DATA.unassigned, label:'Unassigned'},
+  {num: DATA.with_country, label:'With country identified'},
+  {num: Object.keys(DATA.campaign).filter(k=>k!=='No campaign').length, label:'Active named campaigns'},
+];
+document.getElementById('kpiRow').innerHTML = kpis.map(k=>`
+  <div class="kpi"><div class="num ${k.accent?'accent':''}">${k.num}</div><div class="label">${k.label}</div></div>
+`).join('');
+
+barList('countryList', DATA.country, c.cyan);
+barList('sourceList', DATA.source, c.violetLight, {colorFn:(k)=> k==='Unspecified' ? c.mute : c.violetLight});
+barList('ownerList', DATA.owners, c.cyan);
+barList('campaignList', DATA.campaign, c.green, {colorFn:(k)=> k==='No campaign' ? c.mute : c.green});
+
+donut('priorityDonut','priorityLegend', DATA.priority, ['#00D67E','#00B7FA','#917AE6','#583F98','#23335C','#475467','#1B2D5A']);
+donut('relationDonut','relationLegend', DATA.relation, ['#1B2D5A','#00D67E','#583F98','#00B7FA','#917AE6','#23335C']);
+
+const fields = [
+  {label:'Country', val: DATA.with_country},
+  {label:'Industry', val: DATA.with_industry},
+  {label:'Assigned owner', val: DATA.assigned},
+];
+const compObj = {};
+fields.forEach(f=> compObj[f.label] = f.val);
+const compMax = DATA.total;
+document.getElementById('completeList').innerHTML = fields.map(f=>`
+  <div class="bar-row">
+    <div class="name">${f.label}</div>
+    <div class="bar-track"><div class="bar-fill" style="width:${(f.val/compMax*100).toFixed(0)}%; background:${c.violet}"></div></div>
+    <div class="val">${Math.round(f.val/compMax*100)}%</div>
+  </div>
+`).join('');
+</script>
+</body>
+</html>
