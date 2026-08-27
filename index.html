@@ -5,252 +5,299 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>MER Group — Leads Dashboard</title>
 <style>
-:root{--bg:#09122B;--card:#152040;--card2:#1A2850;--border:#1E3060;--violet:#583F98;--vl:#7B5FC4;--cyan:#00B7FA;--green:#00D67E;--orange:#F79009;--mute:#64748B;--soft:#94A3B8;--paper:#E2E8F0;--white:#FFF;}
+:root{
+  --bg:#070F24;--card:#101E3A;--card2:#162040;--border:#1C2E55;
+  --violet:#583F98;--vl:#7B5FC4;--vl2:#A78BFA;
+  --cyan:#00B7FA;--green:#00D67E;--orange:#F79009;--red:#F04438;
+  --mute:#475467;--soft:#94A3B8;--paper:#CBD5E1;--white:#F8FAFC;
+}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--bg);color:var(--paper);font-family:'Segoe UI',Arial,sans-serif;font-size:14px;}
-.w{max-width:1300px;margin:0 auto;padding:24px 24px 80px;}
-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding-bottom:20px;border-bottom:1px solid var(--border);margin-bottom:20px;}
-.ey{color:var(--cyan);font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;margin-bottom:4px;}
-h1{font-size:24px;font-weight:700;color:var(--white);}
-.hr{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-.mt{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:5px 11px;font-size:12px;color:var(--soft);}
-.mt b{color:var(--white);}
-.btn{display:inline-flex;align-items:center;gap:6px;border:none;border-radius:8px;padding:8px 14px;font-size:12.5px;cursor:pointer;font-weight:600;transition:.15s;white-space:nowrap;}
-.btn-v{background:var(--violet);color:#fff;}.btn-v:hover{background:var(--vl);}
-.btn-g{background:#065f46;color:#00D67E;border:1px solid #047857;}.btn-g:hover{background:#047857;}
-.btn-s{background:var(--card);color:var(--soft);border:1px solid var(--border);}.btn-s:hover{border-color:var(--cyan);color:var(--white);}
-.cp{font-size:12px;color:var(--green);display:none;}
-/* Filter rows */
-.frow{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:13px 20px;margin-bottom:12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
-.lbl{color:var(--soft);font-size:12px;font-weight:500;white-space:nowrap;}
-select.os{background:var(--card2);border:1px solid var(--border);border-radius:8px;color:var(--white);padding:7px 12px;font-size:13px;outline:none;cursor:pointer;min-width:220px;}
-select.os:focus{border-color:var(--cyan);}
-.pill{display:none;align-items:center;gap:8px;background:var(--violet);border-radius:20px;padding:5px 14px;font-size:12.5px;font-weight:600;}
+body{background:var(--bg);color:var(--paper);font-family:'Segoe UI',system-ui,Arial,sans-serif;font-size:14px;min-height:100vh;}
+
+/* TOP NAV */
+.topnav{background:linear-gradient(135deg,#0D1B3E 0%,#0A1428 100%);border-bottom:1px solid var(--border);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;}
+.nav-brand{display:flex;align-items:center;gap:12px;}
+
+.nav-title{font-size:15px;font-weight:700;color:var(--white);}
+.nav-sub{font-size:11px;color:var(--soft);margin-top:1px;}
+.nav-right{display:flex;align-items:center;gap:8px;}
+.nav-badge{background:rgba(0,183,250,.1);border:1px solid rgba(0,183,250,.25);color:var(--cyan);border-radius:20px;padding:3px 10px;font-size:11.5px;font-weight:600;}
+
+/* MAIN LAYOUT */
+.layout{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 56px);}
+
+/* SIDEBAR */
+.sidebar{background:linear-gradient(180deg,#0A1628 0%,#08121F 100%);border-right:1px solid var(--border);padding:20px 14px;display:flex;flex-direction:column;gap:4px;overflow-y:auto;}
+.sidebar-section{margin-bottom:4px;}
+.sidebar-label{font-size:10px;font-weight:700;color:var(--mute);text-transform:uppercase;letter-spacing:.1em;padding:0 6px;margin-bottom:8px;margin-top:14px;display:flex;justify-content:space-between;align-items:center;}
+.os-wrap{position:relative;}
+select.os{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;color:var(--white);padding:8px 12px;font-size:12.5px;outline:none;cursor:pointer;appearance:none;transition:.15s;}
+select.os:focus{border-color:var(--cyan);background:rgba(6,182,212,.06);}
+select.os:hover{border-color:rgba(139,92,246,.4);}
+.os-icon{position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--soft);pointer-events:none;font-size:10px;}
+.pill{display:none;align-items:center;gap:6px;background:linear-gradient(135deg,var(--violet),var(--vl));border-radius:8px;padding:6px 10px;font-size:11.5px;font-weight:600;margin-top:6px;box-shadow:0 2px 8px rgba(107,70,193,.3);}
 .pill.show{display:flex;}
-input[type=date]{background:var(--card2);border:1px solid var(--border);border-radius:7px;color:var(--white);padding:5px 10px;font-size:12.5px;outline:none;cursor:pointer;}
-input[type=date]:focus{border-color:var(--cyan);}
-.qb{background:var(--card2);border:1px solid var(--border);border-radius:6px;color:var(--soft);padding:5px 12px;font-size:12px;cursor:pointer;transition:.15s;white-space:nowrap;}
-.qb:hover{border-color:var(--cyan);color:var(--white);}
-.qb.on{background:var(--violet);border-color:var(--vl);color:var(--white);}
-.fc{margin-left:auto;font-size:13px;color:var(--cyan);font-weight:700;white-space:nowrap;}
+.pill-x{cursor:pointer;opacity:.6;margin-left:auto;font-size:13px;}.pill-x:hover{opacity:1;}
+
+/* Date buttons */
+.qbtns{display:grid;grid-template-columns:1fr 1fr;gap:4px;}
+.qb{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:7px;color:var(--soft);padding:6px 6px;font-size:11px;cursor:pointer;transition:.15s;text-align:center;width:100%;font-weight:500;}
+.qb:hover{border-color:rgba(6,182,212,.4);color:var(--white);background:rgba(6,182,212,.06);}
+.qb.on{background:rgba(107,70,193,.2);border-color:var(--vl);color:var(--vl2);font-weight:600;}
+.date-inputs{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:6px;}
+input[type=date]{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:7px;color:var(--white);padding:5px 8px;font-size:11px;outline:none;width:100%;transition:.15s;}
+input[type=date]:focus{border-color:var(--cyan);background:rgba(6,182,212,.06);}
+
 /* Campaign chips */
-.camprow{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 20px;margin-bottom:20px;}
-.camphead{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;}
-.camphead span{color:var(--soft);font-size:12px;font-weight:500;}
-.campacts{display:flex;gap:10px;}
-.cact{background:none;border:none;color:var(--cyan);font-size:12px;cursor:pointer;}.cact:hover{text-decoration:underline;}
-.chips{display:flex;flex-wrap:wrap;gap:7px;overflow:hidden;max-height:34px;transition:max-height .3s;}
-.chips.open{max-height:400px;}
-.chip{background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:11.5px;cursor:pointer;color:var(--soft);white-space:nowrap;transition:.15s;user-select:none;}
-.chip:hover{border-color:var(--cyan);color:var(--white);}
-.chip.on{background:var(--violet);border-color:var(--vl);color:var(--white);}
-.cn{font-size:10px;opacity:.6;}
-.showm{background:none;border:none;color:var(--cyan);font-size:11.5px;cursor:pointer;margin-top:8px;display:block;}.showm:hover{text-decoration:underline;}
+.chip-wrap{display:flex;flex-direction:column;gap:3px;}
+.chip{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:7px;padding:5px 10px;font-size:11.5px;cursor:pointer;color:var(--soft);transition:.15s;display:flex;justify-content:space-between;align-items:center;}
+.chip:hover{border-color:rgba(139,92,246,.4);color:var(--white);background:rgba(139,92,246,.08);}
+.chip.on{background:rgba(107,70,193,.15);border-color:rgba(139,92,246,.5);color:var(--vl2);}
+.chip-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px;}
+.chip-n{font-size:10px;opacity:.55;flex-shrink:0;margin-left:6px;background:rgba(255,255,255,.07);border-radius:10px;padding:1px 6px;}
+.chip-wrap.collapsed .chip:nth-child(n+7){display:none;}
+.camp-toggle{background:none;border:none;color:var(--cyan);font-size:11px;cursor:pointer;padding:5px 0;text-align:left;opacity:.8;}
+.camp-toggle:hover{opacity:1;text-decoration:underline;}
+.camp-acts{display:flex;gap:8px;}
+.cact{background:none;border:none;color:rgba(6,182,212,.7);font-size:10.5px;cursor:pointer;padding:0;}.cact:hover{color:var(--cyan);}
+
+/* MAIN CONTENT */
+.main{padding:24px 28px;overflow-x:hidden;}
+.fc-bar{display:flex;align-items:center;gap:8px;margin-bottom:20px;}
+.fc-pill{background:rgba(6,182,212,.08);border:1px solid rgba(6,182,212,.18);border-radius:20px;padding:4px 14px;font-size:12px;color:var(--cyan);font-weight:500;}
+
 /* KPIs */
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
-.kpi{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;}
-.kn{font-size:30px;font-weight:700;color:var(--white);line-height:1;}
-.kn.c{color:var(--cyan);}.kn.g{color:var(--green);}.kn.o{color:var(--orange);}
-.kl{color:var(--soft);font-size:12px;margin-top:5px;}
-.ks{color:var(--mute);font-size:11px;margin-top:2px;}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+.kpi{background:linear-gradient(135deg,var(--card) 0%,rgba(13,26,50,.6) 100%);border:1px solid var(--border);border-radius:14px;padding:20px;position:relative;overflow:hidden;transition:.2s;}
+.kpi:hover{border-color:rgba(139,92,246,.3);transform:translateY(-1px);}
+.kpi::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:14px 14px 0 0;}
+.kpi.g::after{background:linear-gradient(90deg,var(--green),#059669);}
+.kpi.c::after{background:linear-gradient(90deg,var(--cyan),#0891B2);}
+.kpi.o::after{background:linear-gradient(90deg,var(--orange),#D97706);}
+.kpi.d::after{background:linear-gradient(90deg,var(--vl),var(--violet));}
+.kpi-icon{font-size:22px;margin-bottom:14px;display:block;}
+.kn{font-size:36px;font-weight:800;color:var(--white);line-height:1;letter-spacing:-1.5px;}
+.kpi.g .kn{color:#34D399;}
+.kpi.c .kn{color:#22D3EE;}
+.kpi.o .kn{color:#FBBF24;}
+.kpi.d .kn{color:var(--vl2);}
+.kl{color:var(--soft);font-size:12.5px;margin-top:6px;font-weight:500;}
+.ks{color:var(--mute);font-size:11px;margin-top:3px;}
+
 /* Charts */
-.g2{display:grid;grid-template-columns:1.3fr 1fr;gap:16px;margin-bottom:16px;}
-.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px;}
-.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;}
-.card h2{font-size:14px;font-weight:600;color:var(--white);margin-bottom:3px;}
-.sub{font-size:11.5px;color:var(--soft);margin-bottom:14px;}
+.g2{display:grid;grid-template-columns:1.4fr 1fr;gap:14px;margin-bottom:14px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px;}
+.card{background:linear-gradient(160deg,var(--card) 0%,rgba(8,18,31,.8) 100%);border:1px solid var(--border);border-radius:14px;padding:18px 20px;transition:.2s;}
+.card:hover{border-color:rgba(139,92,246,.2);}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.card h2{font-size:13px;font-weight:700;color:var(--white);letter-spacing:-.2px;}
+.card-sub{font-size:10.5px;color:var(--mute);}
 .blist{display:flex;flex-direction:column;gap:9px;}
-.brow{display:grid;grid-template-columns:120px 1fr 34px;align-items:center;gap:9px;font-size:12px;}
-.bnm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.btr{background:var(--card2);border-radius:5px;height:9px;overflow:hidden;}
-.bfi{height:100%;border-radius:5px;transition:width .3s;}
-.bvl{text-align:right;color:var(--soft);font-size:11.5px;}
+.brow{display:grid;grid-template-columns:110px 1fr 32px;align-items:center;gap:8px;font-size:12px;}
+.bnm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--paper);}
+.btr{background:rgba(255,255,255,.05);border-radius:4px;height:7px;overflow:hidden;}
+.bfi{height:100%;border-radius:4px;transition:width .5s cubic-bezier(.4,0,.2,1);}
+.bvl{text-align:right;color:var(--mute);font-size:11.5px;font-variant-numeric:tabular-nums;}
 .tl{display:flex;flex-direction:column;gap:8px;}
-.tlr{display:flex;align-items:center;gap:10px;}
-.tld{color:var(--soft);width:65px;flex-shrink:0;font-size:11px;}
-.tlt{flex:1;background:var(--card2);border-radius:4px;height:8px;overflow:hidden;}
-.tlb{height:100%;border-radius:4px;background:var(--cyan);transition:width .3s;}
-.tlv{width:28px;text-align:right;color:var(--soft);font-size:11px;}
-/* Table */
-.tblwrap{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px;}
-.tbltop{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:14px;}
-.tbltop h2{font-size:15px;font-weight:700;color:var(--white);}
-.tblacts{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-.si{font-size:12px;color:var(--cyan);display:none;}.si.show{display:block;}
-.tf{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border);}
-input[type=text]{background:var(--card2);border:1px solid var(--border);border-radius:7px;color:var(--white);padding:5px 10px;font-size:12.5px;outline:none;}
-input[type=text]:focus{border-color:var(--cyan);}
-select.sf{background:var(--card2);border:1px solid var(--border);border-radius:7px;color:var(--white);padding:5px 10px;font-size:12.5px;outline:none;}
+.tlr{display:flex;align-items:center;gap:8px;}
+.tld{color:var(--soft);width:58px;flex-shrink:0;font-size:11px;}
+.tlt{flex:1;background:rgba(255,255,255,.05);border-radius:4px;height:7px;overflow:hidden;}
+.tlb{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--violet),var(--cyan));transition:width .5s cubic-bezier(.4,0,.2,1);}
+.tlv{width:26px;text-align:right;color:var(--mute);font-size:11px;font-variant-numeric:tabular-nums;}
+
+/* TABLE */
+.tblwrap{background:linear-gradient(160deg,var(--card) 0%,rgba(8,18,31,.9) 100%);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+.tbl-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.tbl-header h2{font-size:14px;font-weight:700;color:var(--white);letter-spacing:-.3px;}
+.tbl-acts{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.si{font-size:12px;color:var(--cyan);display:none;font-weight:600;}.si.show{display:block;}
+.btn{display:inline-flex;align-items:center;gap:5px;border:none;border-radius:8px;padding:7px 13px;font-size:12px;cursor:pointer;font-weight:600;transition:.15s;white-space:nowrap;}
+.btn-g{background:rgba(16,185,129,.1);color:var(--green);border:1px solid rgba(16,185,129,.2);}.btn-g:hover{background:rgba(16,185,129,.2);box-shadow:0 0 12px rgba(16,185,129,.15);}
+.btn-s{background:rgba(255,255,255,.04);color:var(--soft);border:1px solid var(--border);}.btn-s:hover{border-color:rgba(6,182,212,.4);color:var(--white);}
+.tbl-filters{padding:12px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:rgba(0,0,0,.2);}
+input[type=text]{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:8px;color:var(--white);padding:7px 11px;font-size:12px;outline:none;transition:.15s;}
+input[type=text]:focus{border-color:var(--cyan);background:rgba(6,182,212,.06);box-shadow:0 0 0 3px rgba(6,182,212,.08);}
+select.sf{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:8px;color:var(--white);padding:7px 11px;font-size:12px;outline:none;transition:.15s;}
+select.sf:focus{border-color:var(--cyan);}
+.tbl-count{margin-left:auto;font-size:12px;color:var(--cyan);font-weight:600;}
 .tsc{overflow-x:auto;}
 table{width:100%;border-collapse:collapse;font-size:12px;min-width:800px;}
-thead th{color:var(--soft);font-weight:500;text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;}
-tbody td{padding:9px 10px;border-bottom:1px solid var(--border);color:var(--paper);vertical-align:middle;}
+thead th{color:var(--mute);font-weight:600;text-align:left;padding:10px 14px;border-bottom:1px solid var(--border);font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;white-space:nowrap;background:rgba(0,0,0,.25);}
+tbody td{padding:11px 14px;border-bottom:1px solid rgba(26,45,80,.5);color:var(--paper);vertical-align:middle;}
 tbody tr:last-child td{border-bottom:none;}
-tbody tr:hover td{background:var(--card2);}
-tbody tr.sel td{background:#1a1040;}
-input[type=checkbox]{accent-color:var(--violet);width:14px;height:14px;cursor:pointer;}
-.nc{color:var(--mute);text-align:right;padding-right:10px;font-size:11px;}
-.co b{color:var(--white);}.co small{color:var(--soft);display:block;font-size:11px;}
+tbody tr:hover td{background:rgba(26,45,80,.6);}
+tbody tr.sel td{background:rgba(107,70,193,.12);border-color:rgba(139,92,246,.15);}
+input[type=checkbox]{accent-color:var(--vl);width:14px;height:14px;cursor:pointer;}
+.nc{color:var(--mute);text-align:right;padding-right:10px;font-size:11px;width:40px;}
+.co b{color:var(--white);font-size:12.5px;font-weight:600;}.co small{color:var(--soft);display:block;font-size:11px;margin-top:2px;}
 .em{color:var(--cyan);font-size:11.5px;text-decoration:none;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px;}
-.em:hover{text-decoration:underline;}
-.ph{color:var(--soft);font-size:11px;display:block;}
-.badge{display:inline-block;border-radius:20px;padding:2px 9px;font-size:11px;font-weight:500;}
-.bl{background:#052e16;color:#00D67E;border:1px solid #065f46;}
-.bn{background:#1e1b4b;color:#a5b4fc;border:1px solid #3730a3;}
-.bgr{background:var(--card2);color:var(--soft);border:1px solid var(--border);}
-footer{text-align:center;color:var(--mute);font-size:11px;margin-top:28px;line-height:1.8;}
-@media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr);}.g2,.g3{grid-template-columns:1fr;}}
+.em:hover{text-decoration:underline;color:#67E8F9;}
+.ph{color:var(--soft);font-size:11px;display:block;margin-top:2px;}
+.badge{display:inline-block;border-radius:5px;padding:2px 8px;font-size:11px;font-weight:600;letter-spacing:.02em;}
+.bl{background:rgba(16,185,129,.08);color:#34D399;border:1px solid rgba(16,185,129,.2);}
+.bn{background:rgba(139,92,246,.1);color:var(--vl2);border:1px solid rgba(139,92,246,.2);}
+.bgr{background:rgba(255,255,255,.04);color:var(--mute);border:1px solid var(--border);}
+.empty-row td{text-align:center;color:var(--mute);padding:48px;font-size:13px;}
+
+footer{text-align:center;color:var(--mute);font-size:11px;padding:20px;border-top:1px solid var(--border);margin-top:8px;}
+footer a{color:var(--soft);text-decoration:none;transition:.15s;}.footer a:hover{color:var(--white);}
+
+@media(max-width:1024px){.layout{grid-template-columns:1fr;}.sidebar{flex-direction:row;flex-wrap:wrap;padding:16px;border-right:none;border-bottom:1px solid var(--border);}.sidebar-section{min-width:200px;flex:1;}.kpis{grid-template-columns:repeat(2,1fr);}.g2,.g3{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
-<div class="w">
-<header>
-  <div><div class="ey">MER Group &middot; Marketing</div><h1>Leads Dashboard</h1></div>
-  <div class="hr">
-    <div class="mt">Updated <b id="gd"></b></div>
-    <div class="mt"><b id="tot"></b> leads total</div>
-    <button class="btn btn-v" onclick="cpLink()">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-      Share this view
-    </button>
-    <span class="cp" id="cp">Link copied!</span>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <div class="nav-brand">
+    <div class="nav-title" style="font-size:17px;font-weight:700;letter-spacing:-.3px">Leads Dashboard</div>
   </div>
-</header>
-
-<!-- Owner filter -->
-<div class="frow">
-  <span class="lbl">Sales Owner</span>
-  <select class="os" id="osel" onchange="onOwner()"><option value="">All owners</option></select>
-  <div class="pill" id="opill"><span id="pname"></span><span style="cursor:pointer;margin-left:6px;opacity:.7" onclick="clearOwner()">x</span></div>
-</div>
-
-<!-- Date filter -->
-<div class="frow">
-  <span class="lbl">Period</span>
-  <input type="date" id="df">
-  <span style="color:var(--border)">to</span>
-  <input type="date" id="dt">
-  <div style="display:flex;gap:7px;flex-wrap:wrap">
-    <button class="qb" onclick="setQ('all',this)">All time</button>
-    <button class="qb" onclick="setQ('2025',this)">2025</button>
-    <button class="qb on" onclick="setQ('2026',this)">Since 2026</button>
-    <button class="qb" onclick="setQ('30d',this)">Last 30 days</button>
+  <div class="nav-right">
+    <div class="nav-badge" id="tot">— leads</div>
+    <div class="nav-badge" style="background:rgba(0,214,126,.08);border-color:rgba(0,214,126,.2);color:var(--green)">Updated <span id="gd"></span></div>
   </div>
-  <span class="fc" id="fc"></span>
-</div>
+</nav>
 
-<!-- Campaign chips -->
-<div class="camprow">
-  <div class="camphead">
-    <span>Campaign</span>
-    <div class="campacts">
-      <button class="cact" onclick="selAll()">Select all</button>
-      <button class="cact" onclick="selNone()">Clear</button>
+<div class="layout">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+
+  <div class="sidebar-section">
+    <div class="sidebar-label">Sales Owner</div>
+    <div class="os-wrap">
+      <select class="os" id="osel" onchange="onOwner()"><option value="">All owners</option></select>
+      <span class="os-icon">▾</span>
+    </div>
+    <div class="pill" id="opill">
+      <span id="pname" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:160px;"></span>
+      <span class="pill-x" onclick="clearOwner()">✕</span>
     </div>
   </div>
-  <div class="chips" id="chips"></div>
-  <button class="showm" id="showm" onclick="tglChips()">Show all campaigns</button>
-</div>
 
-<!-- KPIs -->
-<div class="kpis" id="kpis"></div>
-
-<!-- Charts -->
-<div class="g2">
-  <div class="card"><h2>Leads by Country</h2><p class="sub">Top markets</p><div class="blist" id="cbars"></div></div>
-  <div class="card"><h2>Over Time</h2><p class="sub">Created by month</p><div class="tl" id="tl"></div></div>
-</div>
-<div class="g3">
-  <div class="card"><h2>Source</h2><p class="sub">Where leads came from</p><div class="blist" id="sbars"></div></div>
-  <div class="card"><h2>Campaigns</h2><p class="sub">Lead volume</p><div class="blist" id="cmpbars"></div></div>
-  <div class="card" id="ownercard"><h2>Owner Workload</h2><p class="sub">Leads per owner</p><div class="blist" id="obars"></div></div>
-</div>
-
-<!-- Leads table -->
-<div class="tblwrap">
-  <div class="tbltop">
-    <h2 id="tbltt">All Leads</h2>
-    <div class="tblacts">
-      <span class="si" id="si"></span>
-      <button class="btn btn-s" onclick="tglAll()">Select all</button>
-      <button class="btn btn-g" id="dlsel" onclick="dlSel()" style="display:none">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Export selected
-      </button>
-      <button class="btn btn-g" onclick="dlAll()">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Export all
-      </button>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Period</div>
+    <div class="qbtns">
+      <button class="qb" onclick="setQ('all',this)">All time</button>
+      <button class="qb" onclick="setQ('2025',this)">2025</button>
+      <button class="qb on" onclick="setQ('2026',this)">Since 2026</button>
+      <button class="qb" onclick="setQ('30d',this)">Last 30d</button>
+    </div>
+    <div class="date-inputs" style="margin-top:8px;">
+      <input type="date" id="df">
+      <input type="date" id="dt">
     </div>
   </div>
-  <div class="tf">
-    <input type="text" id="tsrch" placeholder="Search company or contact..." oninput="ftbl()" style="min-width:180px">
-    <select class="sf" id="tctr" onchange="ftbl()"><option value="">All countries</option></select>
-    <button class="btn btn-s" onclick="clrTbl()" style="font-size:12px;padding:5px 10px">Clear</button>
-    <span class="fc" id="tfc" style="margin-left:0"></span>
+
+  <div class="sidebar-section">
+    <div class="sidebar-label" style="display:flex;justify-content:space-between;align-items:center;padding-right:0;">
+      <span>Campaign</span>
+      <div class="camp-acts">
+        <button class="cact" onclick="selAll()">All</button>
+        <button class="cact" onclick="selNone()">Clear</button>
+      </div>
+    </div>
+    <div class="chip-wrap collapsed" id="chips"></div>
+    <button class="camp-toggle" id="campToggle" onclick="tglChips()">▼ Show all</button>
   </div>
-  <div class="tsc">
-    <table>
-      <thead><tr>
-        <th style="width:36px;padding-left:12px"><input type="checkbox" id="mchk" onchange="mTgl(this)"></th>
-        <th class="nc">#</th>
-        <th>Company</th><th>Contact &amp; Channels</th>
-        <th>Country</th><th>Source</th><th>Campaign</th><th>Interest</th><th>Created</th>
-      </tr></thead>
-      <tbody id="tblbody"></tbody>
-    </table>
+
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+  <div class="fc-bar">
+    <span class="fc-pill" id="fc">— leads shown</span>
   </div>
+
+  <!-- KPIs -->
+  <div class="kpis" id="kpis"></div>
+
+  <!-- Charts row 1 -->
+  <div class="g2">
+    <div class="card">
+      <div class="card-header"><h2>Leads by Country</h2><span class="card-sub">Top markets</span></div>
+      <div class="blist" id="cbars"></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><h2>Over Time</h2><span class="card-sub">Created by month</span></div>
+      <div class="tl" id="tl"></div>
+    </div>
+  </div>
+
+  <!-- Charts row 2 -->
+  <div class="g3">
+    <div class="card">
+      <div class="card-header"><h2>Source</h2><span class="card-sub">Where leads came from</span></div>
+      <div class="blist" id="sbars"></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><h2>Campaigns</h2><span class="card-sub">Lead volume</span></div>
+      <div class="blist" id="cmpbars"></div>
+    </div>
+    <div class="card" id="ownercard">
+      <div class="card-header"><h2>Owner Workload</h2><span class="card-sub">Leads per owner</span></div>
+      <div class="blist" id="obars"></div>
+    </div>
+  </div>
+
+  <!-- Leads table -->
+  <div class="tblwrap">
+    <div class="tbl-header">
+      <h2 id="tbltt">All Leads</h2>
+      <div class="tbl-acts">
+        <span class="si" id="si"></span>
+        <button class="btn btn-s" onclick="tglAll()">Select all</button>
+        <button class="btn btn-g" id="dlsel" onclick="dlSel()" style="display:none">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export selected
+        </button>
+        <button class="btn btn-g" onclick="dlAll()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export all
+        </button>
+      </div>
+    </div>
+    <div class="tbl-filters">
+      <input type="text" id="tsrch" placeholder="&#x1F50D; Search company or contact..." oninput="ftbl()" style="min-width:220px;">
+      <select class="sf" id="tctr" onchange="ftbl()"><option value="">All countries</option></select>
+      <button class="btn btn-s" onclick="clrTbl()" style="font-size:11.5px;padding:6px 11px;">Clear</button>
+      <span class="tbl-count" id="tfc"></span>
+    </div>
+    <div class="tsc">
+      <table>
+        <thead><tr>
+          <th style="width:40px;padding-left:14px;"><input type="checkbox" id="mchk" onchange="mTgl(this)"></th>
+          <th class="nc">#</th>
+          <th>Company</th><th>Contact &amp; Channels</th>
+          <th>Country</th><th>Source</th><th>Campaign</th><th>Interest</th><th>Created</th>
+        </tr></thead>
+        <tbody id="tblbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <footer>MER Group &middot; Leads Dashboard &middot; Created by Tamar Bomballi &middot; <a href="mailto:tamar_b@mer-group.com">tamar_b@mer-group.com</a></footer>
+</main>
 </div>
-<footer>MER Group &middot; Leads Dashboard &middot; Interim solution &middot; HubSpot migration in progress</footer>
-</div>
+
 <script>
 var D={"summary":{"generated":"2026-08-27","total":445,"assigned":278,"country":{"Greece":62,"Mexico":53,"Israel":42,"Unknown":41,"Romania":31,"Chile":26,"Cyprus":19,"Poland":18,"Czech Republic":14,"France":11,"United States":9,"Germany":9},"source":{"Unspecified":203,"Tradeshow":97,"Website Form":64,"LinkedIn Campaign":39,"Event":35,"Apollo":3,"Registro":2,"SITIO WEB":2},"campaign":{"No campaign":215,"Eurosatory":52,"Mexico july 2026":35,"General \u2013 Joseph Dov Kohan":28,"Mining-Chile-LinkedIn-V2":25,"DCDlatam25":24,"Civilian Security Conference":17,"Data Center Article - LinkedIn":8,"Defense EN \u2013 Kobi Sahar":5,"Telecom EN \u2013 Shay Haas":5,"DC Linkedin v2":4,"MuniExpo Tel Aviv 2026":4},"owners_all":{"Shay Haas":65,"Jorge Pollak":52,"Kobi Sahar":30,"Ra\u00fal Pe\u00f1ailillo":21,"Amir Inditzky":17,"Abhay Kumar":15,"Hagay Kimel":14,"Tal David":13,"Menahem Cohen":12,"Ramiro Ibarra":10,"Francisco Javier  Isidro Hern\u00e1ndez":10,"Isabel Tlapa":9},"monthly":{"2026-08":55,"2026-07":92,"2026-06":114,"2025-11":13,"2025-09":20,"2025-06":13,"2025-05":138},"all_campaigns":["Civilian Security Conference","DC Linkedin v2","DCDlatam25","Data Center Article - LinkedIn","Defense EN \u2013 Kobi Sahar","Defense ES \u2013 Joseph Dov Kohan","Defense HE \u2013 Tal David","Eurosatory","Fiber Optic HE \u2013 Avichai Braun + Alon Refael","General \u2013 Joseph Dov Kohan","HLS EN \u2013 Shay Haas","HLS HE \u2013 Amit Livni + Idan Elmaliah","Mexico july 2026","Mining-Chile-LinkedIn-V1","Mining-Chile-LinkedIn-V2","MuniExpo Tel Aviv 2026","No campaign","Shelters SP - Yosi","Telecom EN \u2013 Shay Haas","Telecom ES \u2013 Menachem Cohen + Isabel Tlapa","Towers HE \u2013 Rami Revivo","en/contact","he/contact"],"min_date":"2025-05-06","max_date":"2026-08-27"},"owners":["Abhay Kumar","Alon Refael","Amir Inditzky","Amit Livni","Avichai Braun","Aviv Melamed","Dana Nehama Minkovsky","David Hayut","Enrique Ramirez","Francisco Javier  Isidro Hern\u00e1ndez","Francisco Miguel Paredes P\u00e9rez","Hagay Kimel","Idan Elmaliah","Isabel Tlapa","Itzhak Schwartz","Jorge Campos","Jorge Pollak","Joseph Dov Kohan","Kobi Sahar","Kobi Yehiel","Menahem Cohen","Omer Laviv","Rami Revivo","Ramiro Ibarra","Ra\u00fal Pe\u00f1ailillo","Shay Haas","Sol Israelson","Tal David"],"owner_data":{"Abhay Kumar":{"total":15,"country":{"Romania":4,"Spain":3,"Bulgaria":3,"Portugal":2,"France":1,"Switzerland":1,"United States":1},"source":{"LinkedIn Campaign":12,"Apollo":3},"campaign":{"Data Center Article - LinkedIn":8,"DC Linkedin v2":4,"No campaign":3},"leads":[{"id":682,"company":"Cellnex Telecom","contact":"Mirko Masi","country":"Spain","email":"mimabo2024@outlook.es","phone":"","source":"LinkedIn Campaign","campaign":"DC Linkedin v2","interest":"","created":"2026-08-27"},{"id":681,"company":"NGC Partners","contact":"Jesus Sanchez Rios","country":"Spain","email":"jesus.sanchez@greenkrol.com","phone":"","source":"LinkedIn Campaign","campaign":"DC Linkedin v2","interest":"","created":"2026-08-27"},{"id":680,"company":"Hub4AI","contact":"Mihai Luca","country":"Romania","email":"mihai@hub4ai.com","phone":"","source":"LinkedIn Campaign","campaign":"DC Linkedin v2","interest":"","created":"2026-08-27"},{"id":679,"company":"Innova Advanced Consulting","contact":"Ignacio Sainz De Baranda S\u00e1nchez","country":"Spain","email":"isainz@innovaconsulting.es","phone":"","source":"LinkedIn Campaign","campaign":"DC Linkedin v2","interest":"","created":"2026-08-27"},{"id":678,"company":"Orange","contact":"Christel Heydemann","country":"France","email":"christel.heydemann@orange.com","phone":"+33 6 48 29 28 61","source":"Apollo","campaign":"No campaign","interest":"","created":"2026-08-19"},{"id":677,"company":"Morrison","contact":"Gianfranco Saladino","country":"Switzerland","email":"gianfranco.saladino@morrisonglobal.com","phone":"+41 79 909 79 30","source":"Apollo","campaign":"No campaign","interest":"","created":"2026-08-19"},{"id":676,"company":"Morrison","contact":"William Smales","country":"United States","email":"o\twilliam.smales@morrisonglobal.com o\twilliam.smales@hrlmorrison.com","phone":"o\t+61 447 636 105","source":"Apollo","campaign":"No campaign","interest":"","created":"2026-08-19"},{"id":603,"company":"Propy Inc.","contact":"Joana Leventieva","country":"Bulgaria","email":"Leventieva@gmail.com","phone":"","source":"LinkedIn Campaign","campaign":"Data Center Article - LinkedIn","interest":"","created":"2026-07-29"},{"id":602,"company":"Paraflow Communications Ltd.","contact":"Stefan Ivanov","country":"Bulgaria","email":"sivanov@paraflow.bg","phone":"","source":"LinkedIn Campaign","campaign":"Data Center Article - LinkedIn","interest":"","created":"2026-07-29"},{"id":601,"company":"Synora Group","contact":"Krasimir Petrov","country":"Bulgaria","email":"k.petrov@synoralabs.eu","phone":"","source":"LinkedIn Campaign","campaign":"Data Center Article - LinkedIn","interest":"","created":"2026-07-29"},{"id":600,"company":"BDS Strategy","contact":"B\u00e1rbara Dos Santos","country":"Portugal","email":"barbara@bdsstrategyvideos.com","phone":"","source":"LinkedIn Campaign","campaign":"Data Center Article - LinkedIn","interest":"","created":"2026-07-29"},{"id":599,"company":"TMD FRICTION ROMANIA SRL","contact":"Mihai Gabriel Ciurciun","country":"Romania","email":"mihai.ciurciun@tmdfriction.com","phone":"","source":"LinkedIn Campaign","campaign":"Data Center Article - LinkedIn","interest":"","created":"2026-07-29"},{"id":561,"company":"Department of Foreign Trade","contact":"Gabriel Dutu","country":"Romania","email":"gabrieldutu@yahoo.com","phone":"","source":"LinkedIn Campaign","campaign":"Data Center Article - LinkedIn","interest":"","created":"2026-07-23"},{"id":543,"company":"Cloudfm Group Ltd","contact":"Terence Mills","country":"Portugal","email":"t.mills@cloudfmgroup.com","phone":"","source":"LinkedIn Campaign","campaign":"Data Center Article - LinkedIn","interest":"","created":"2026-07-22"},{"id":541,"company":"PORR Rom\u00e2nia","contact":"Carmen SCHUSTER","country":"Romania","email":"carmen.schuster@porr.ro","phone":"","source":"LinkedIn Campaign","campaign":"Data Center Article - LinkedIn","interest":"","created":"2026-07-21"}]},"Alon Refael":{"total":3,"country":{"Israel":3},"source":{"Website Form":3},"campaign":{"Fiber Optic HE \u2013 Avichai Braun + Alon Refael":3},"leads":[{"id":273,"company":"","contact":"\u05d0\u05e1\u05e3 \u05d1\u05df \u05d0\u05d1\u05d5","country":"Israel","email":"asaf262628@gmail.com","phone":"0525438579","source":"Website Form","campaign":"Fiber Optic HE \u2013 Avichai Braun + Alon Refael","interest":"","created":"2026-06-25"},{"id":272,"company":"","contact":"\u05d9\u05d4\u05d5\u05d3\u05d4 \u05e9\u05e8\u05d1\u05d0\u05e0\u05d9","country":"Israel","email":"yeuda02@gmail.com","phone":"","source":"Website Form","campaign":"Fiber Optic HE \u2013 Avichai Braun + Alon Refael","interest":"","created":"2026-06-25"},{"id":271,"company":"","contact":"\u05d9\u05d0\u05d9\u05e8 \u05dc\u05d9\u05e4\u05e9\u05d9\u05e5","country":"Israel","email":"yair@lifshitz.io","phone":"0526989206","source":"Website Form","campaign":"Fiber Optic HE \u2013 Avichai Braun + Alon Refael","interest":"","created":"2026-06-25"}]},"Amir Inditzky":{"total":17,"country":{"Czech Republic":8,"Slovenia":2,"Romania":2,"Lithuania":2,"Poland":1,"Turkmenistan":1,"Cyprus":1},"source":{"Unspecified":17},"campaign":{"No campaign":17},"leads":[{"id":560,"company":"","contact":"Marek Pogonowaski","country":"Poland","email":"","phone":"","source":"Unspecified","campaign":"No campaign","interest":"","created":"2026-07-23"},{"id":559,"company":"","contact":"Iztok Podbregar","country":"Slovenia","email":"","phone":"","source":"Unspecified","campaign":"No campaign","interest":"","created":"2026-07-23"},{"id":558,"company":"","contact":"Damir Crnec","country":"Slovenia","email":"","phone":"","source":"Unspecified","campaign":"No campaign","interest":"","created":"2026-07-23"},{"id":557,"company":"","contact":"Murat Seitnepesov","country":"Turkmenistan","email":"","phone":"","source":"Unspecified","campaign":"No campaign","interest":"","created":"2026-07-23"},{"id":556,"company":"Cyprus Army Intelligence","contact":"","country":"Cyprus","email":"","phone":"","source":"Unspecified","campaign":"No campaign","interest":"","created":"2026-07-23"},{"id":555,"company":"","contact":"Eduard  Hellvig","country":"Romania","email":"","phone":"","source":"Unspecified","campaign":"No campaign","interest":"","created":"2026-07-23"},{"id":554,"company":"","contact":"Atila Somfalvi","country":"Romania","email":"","phone":"","source":"Unspecified","campaign":"No campaign","interest":"","created":"2026-07-23"},{"id":553,"company":"Omnipol","contact":"Jozef Piga","country":"Czech Republic","email":"","phone":"","source":"Unspecified","campaign":"No campaign","interest":"","created":"2026-07-23"},{"id":552,"company":"NUKIB HQ Security","contact":"Robert Kahofer","country":"Czech Republic","email":"","phone":"","source":"Unspecified","campaign":"No campaign","interest":"","created":"2026-07-23"},{"id":551,"company":"CZ Currency and Stamp HQ","contact":"Robert Kahofer","country":"Czech Republic","email":"","phone":"","source":"Unspecified","campaign":"No campaign","interest":"","created":"2026-07-23"},{"id":550,"company":"CZ Police","contact":"Itzik Yitzhak","country":"Czech Republic","email":"","phone":"","source":"Unspecified","campaign":"No campaign","interest":"","created":"2026-07-23"},{"id":549,"company":"NUKIB Cyber Auth","contact":"Robert Kahofer","country":"Czech Republic","email":"","phone":"","source":"Unspecified","campaign":"No campaign","interest":"","created":"2026-07-23"},{"id":548,"company":"","contact":"Tom\u00e1\u0161 Pojar","country":"Czech Republic","email":"","phone":"","source":"Unspecified","campaign":"No campaign","interest":"","created":"2026-07-23"},{"id":547,"company":"Slovakia Police","contact":"Ivan Moroz","country":"Czech Republic","email":"","phone":"","source":"Unspecified","campaign":"No campaign","interest":"","created":"2026-07-23"},{"id":545,"company":"Scalewolf","contact":"Edvinas Kerza","country":"Lithuania","email":"","phone":"","source":"Unspecified","campaign":"No campaign","interest":"","created":"2026-07-23"},{"id":546,"company":"","contact":"Michal Moroz","country":"Czech Republic","email":"","phone":"","source":"Unspecified","campaign":"No campaign","interest":"","created":"2026-07-23"},{"id":544,"company":"","contact":"Elegijus Paulvicius","country":"Lithuania","email":"","phone":"","source":"Unspecified","campaign":"No campaign","interest":"","created":"2026-07-22"}]},"Amit Livni":{"total":4,"country":{"Israel":1,"India":1,"Unknown":1,"Greece":1},"source":{"Website Form":2,"Unspecified":2},"campaign":{"HLS HE \u2013 Amit Livni + Idan Elmaliah":2,"No campaign":2},"leads":[{"id":277,"company":"","contact":"\u05dc\u05d9\u05d0\u05d5\u05e8 \u05d0\u05dc\u05d9\u05d6\u05e8\u05d5\u05d1/\u05d0\u05dc\u05e7\u05d8\u05e8\u05d9\u05e7\u05d5\u05dd \u05de\u05e2\u05e8\u05db\u05d5\u05ea","country":"Israel","email":"Electricom.isr@gmail.com","phone":"0509481242","source":"Website Form","campaign":"HLS HE \u2013 Amit Livni + Idan Elmaliah","interest":"","created":"2026-06-25"},{"id":275,"company":"\u05e1\u05de\u05d5\u05dc \u05d5\u05d5\u05e8\u05dc\u05d3 \u05d1\u05e2\"\u05de","contact":"\u05e8\u05d5\u05e0\u05d9 \u05de\u05e8\u05e7\u05d5\u05e1","country":"India","email":"ronniemarkus1980@gmail.com","phone":"0522534197","source":"Website Form","campaign":"HLS HE \u2013 Amit Livni + Idan Elmaliah","interest":"","created":"2026-06-25"},{"id":68,"company":"ERTICO ITS EUROPE","contact":"Nikolaos Tsampieris","country":"Unknown","email":"n.tsampieris@mail.ertico.com","phone":"+32 2 400 07 80","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense, Intelligence","created":"2025-05-07"},{"id":63,"company":"VESSELFRONT","contact":"Constantine Abazis","country":"Greece","email":"costas@vesselfront.com","phone":"+30 210 428 5956","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense, Intelligence","created":"2025-05-07"}]},"Avichai Braun":{"total":3,"country":{"Israel":3},"source":{"Website Form":3},"campaign":{"Fiber Optic HE \u2013 Avichai Braun + Alon Refael":3},"leads":[{"id":273,"company":"","contact":"\u05d0\u05e1\u05e3 \u05d1\u05df \u05d0\u05d1\u05d5","country":"Israel","email":"asaf262628@gmail.com","phone":"0525438579","source":"Website Form","campaign":"Fiber Optic HE \u2013 Avichai Braun + Alon Refael","interest":"","created":"2026-06-25"},{"id":272,"company":"","contact":"\u05d9\u05d4\u05d5\u05d3\u05d4 \u05e9\u05e8\u05d1\u05d0\u05e0\u05d9","country":"Israel","email":"yeuda02@gmail.com","phone":"","source":"Website Form","campaign":"Fiber Optic HE \u2013 Avichai Braun + Alon Refael","interest":"","created":"2026-06-25"},{"id":271,"company":"","contact":"\u05d9\u05d0\u05d9\u05e8 \u05dc\u05d9\u05e4\u05e9\u05d9\u05e5","country":"Israel","email":"yair@lifshitz.io","phone":"0526989206","source":"Website Form","campaign":"Fiber Optic HE \u2013 Avichai Braun + Alon Refael","interest":"","created":"2026-06-25"}]},"Aviv Melamed":{"total":1,"country":{"Unknown":1},"source":{"Unspecified":1},"campaign":{"No campaign":1},"leads":[{"id":100,"company":"VARAMAR","contact":"Maryna NOVIKOVA","country":"Unknown","email":"projects@varamar.com","phone":"+38 050 416 12 31","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-12"}]},"Dana Nehama Minkovsky":{"total":2,"country":{"Portugal":1,"Unknown":1},"source":{"Unspecified":2},"campaign":{"No campaign":2},"leads":[{"id":87,"company":"EID","contact":"Gregory Flippes","country":"Portugal","email":"gregory.flippes@eid.pt","phone":"+351 915 181 885","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-11"},{"id":32,"company":"EID","contact":"Lucio Vieira","country":"Unknown","email":"lucio.vieira@eid.pt","phone":"+351 212 948 600","source":"Unspecified","campaign":"No campaign","interest":"","created":"2025-05-06"}]},"David Hayut":{"total":2,"country":{"Israel":2},"source":{"Unspecified":2},"campaign":{"No campaign":2},"leads":[{"id":59,"company":"SANMINA","contact":"Shay Cohen","country":"Israel","email":"shay.cohen@sanmina.com","phone":"+972 (0)4 9079340","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-07"},{"id":58,"company":"SANMINA","contact":"Michael Vurgaft","country":"Israel","email":"michael.vurgaft@sanmina.com","phone":"+972 (0) 4 9079856","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-07"}]},"Enrique Ramirez":{"total":4,"country":{"Chile":4},"source":{"LinkedIn Campaign":4},"campaign":{"Mining-Chile-LinkedIn-V2":3,"Mining-Chile-LinkedIn-V1":1},"leads":[{"id":237,"company":"Agualum Minerals trading","contact":"Manuel Aguero","country":"Chile","email":"manuel.aguero@agualum.cl","phone":"949146765","source":"LinkedIn Campaign","campaign":"Mining-Chile-LinkedIn-V2","interest":"Mining","created":"2026-06-24"},{"id":235,"company":"Agricultura y Miner\u00eda Ecol\u00f3gica","contact":"Enrique Silva Le Fort","country":"Chile","email":"enriquesilva7@gmail.com","phone":"+56 9 9520 9358","source":"LinkedIn Campaign","campaign":"Mining-Chile-LinkedIn-V2","interest":"Mining","created":"2026-06-24"},{"id":234,"company":"Sattel Chile - Soluciones Tecnol\u00f3gicas e Innovadoras","contact":"Francisco Aguero","country":"Chile","email":"faguero@sattelchile.cl","phone":"+56 9 7748 6446","source":"LinkedIn Campaign","campaign":"Mining-Chile-LinkedIn-V2","interest":"Mining","created":"2026-06-24"},{"id":233,"company":"Inclusive Group","contact":"Daniel Paillacar G.","country":"Chile","email":"jeremias.paillacar@gmail.com","phone":"+56 9 8828 2035","source":"LinkedIn Campaign","campaign":"Mining-Chile-LinkedIn-V1","interest":"Mining","created":"2026-06-24"}]},"Francisco Javier  Isidro Hern\u00e1ndez":{"total":10,"country":{"Mexico":6,"Colombia":2,"USA":1,"Panama":1},"source":{"Tradeshow":10},"campaign":{"DCDlatam25":10},"leads":[{"id":475,"company":"Grupo Salinas","contact":"Rogelio Garc\u00eda Cabrera","country":"Mexico","email":"rogarcia@qubitms.mx","phone":"","source":"Tradeshow","campaign":"DCDlatam25","interest":"","created":"2026-07-07"},{"id":474,"company":"Grupo Promass","contact":"Ricardo Gabriel Chavez Castillo","country":"Mexico","email":"rchavez@tiprotec.com","phone":"5525634227","source":"Tradeshow","campaign":"DCDlatam25","interest":"","created":"2026-07-07"},{"id":471,"company":"E-global","contact":"MARIO MIJARES","country":"Mexico","email":"mmijares@eglobal.com.mx","phone":"5641734905","source":"Tradeshow","campaign":"DCDlatam25","interest":"","created":"2026-07-07"},{"id":465,"company":"MDC DATA CENTER","contact":"JORGE SANCHEZ","country":"USA","email":"jorge.torralva@mcallendc.com","phone":"+525611808046","source":"Tradeshow","campaign":"DCDlatam25","interest":"","created":"2026-07-07"},{"id":464,"company":"UNIVERSIDAD DE LA SALLE","contact":"JOAQUIN ELIAS RUGELES PEREZ","country":"Colombia","email":"jrugeles@lasalle.edu.co","phone":"3002043988","source":"Tradeshow","campaign":"DCDlatam25","interest":"","created":"2026-07-07"},{"id":460,"company":"Amazon Web Services","contact":"Javier Cristancho","country":"Colombia","email":"javicris@amazon.com","phone":"","source":"Tradeshow","campaign":"DCDlatam25","interest":"","created":"2026-07-07"},{"id":459,"company":"Servicios electr\u00f3nicos globales","contact":"Isseo Martinez","country":"Mexico","email":"imartinez@eglobal.com.mx","phone":"5515862800","source":"Tradeshow","campaign":"DCDlatam25","interest":"","created":"2026-07-07"},{"id":457,"company":"Eglobal","contact":"Eliseo Velasco","country":"Mexico","email":"evelasco@eglobal.com.mx","phone":"5512535509","source":"Tradeshow","campaign":"DCDlatam25","interest":"","created":"2026-07-07"},{"id":455,"company":"Copa Airlines","contact":"Betzaida Miranda","country":"Panama","email":"bmiranda@copaair.com","phone":"+507 64003330","source":"Tradeshow","campaign":"DCDlatam25","interest":"","created":"2026-07-07"},{"id":452,"company":"","contact":"Alejandro Valles Barajas","country":"Mexico","email":"canovalles@freemansc.com","phone":"8717276344","source":"Tradeshow","campaign":"DCDlatam25","interest":"","created":"2026-07-07"}]},"Francisco Miguel Paredes P\u00e9rez":{"total":6,"country":{"Mexico":5,"El Salvador":1},"source":{"Tradeshow":6},"campaign":{"DCDlatam25":6},"leads":[{"id":476,"company":"AXTEL","contact":"Salvador Diaz Vega","country":"Mexico","email":"sdiaz@axtel.com.mx","phone":"+528992640078","source":"Tradeshow","campaign":"DCDlatam25","interest":"","created":"2026-07-07"},{"id":474,"company":"Grupo Promass","contact":"Ricardo Gabriel Chavez Castillo","country":"Mexico","email":"rchavez@tiprotec.com","phone":"5525634227","source":"Tradeshow","campaign":"DCDlatam25","interest":"","created":"2026-07-07"},{"id":473,"company":"KIO Data Centers","contact":"Omar Alejandro Roman Landa","country":"Mexico","email":"oroman@kio.tech","phone":"5537968852","source":"Tradeshow","campaign":"DCDlatam25","interest":"","created":"2026-07-07"},{"id":466,"company":"DataTrust","contact":"Jose Juarez","country":"El Salvador","email":"jose.juarez@datatrust.sv","phone":"71275643","source":"Tradeshow","campaign":"DCDlatam25","interest":"","created":"2026-07-07"},{"id":461,"company":"Axtel","contact":"JESUS ROSALES","country":"Mexico","email":"jrosales@axtel.com.mx","phone":"8110777940","source":"Tradeshow","campaign":"DCDlatam25","interest":"","created":"2026-07-07"},{"id":454,"company":"KIO","contact":"Andrea Noemi Vidal S\u00e1nchez","country":"Mexico","email":"avidals@kio.tech","phone":"5525015285","source":"Tradeshow","campaign":"DCDlatam25","interest":"","created":"2026-07-07"}]},"Hagay Kimel":{"total":14,"country":{"Romania":14},"source":{"Unspecified":14},"campaign":{"No campaign":14},"leads":[{"id":218,"company":"GUVERNUL MINISTRY OF ECONOMY, ENTREPRENEURSHIP AND TOURISM","contact":"Miruna POPESCU","country":"Romania","email":"miruna.popescu@dce.gov.ro","phone":"+40 740 902 528","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense, Intelligence","created":"2025-09-21"},{"id":217,"company":"Ministry of Economy","contact":"Andreea Alina ZAHARIA","country":"Romania","email":"alina.zaharia@dce.gov.ro","phone":"+40 754 365 053","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense, Intelligence","created":"2025-09-21"},{"id":216,"company":"Centrul pentru Servicii de Radiocomunicatii","contact":"Mihai Ivanescu","country":"Romania","email":"mihai.ivanescu@csr.ro","phone":"+(4)021 311 68 50;","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-09-21"},{"id":214,"company":"COBOTEC","contact":"Stefan Cobori","country":"Romania","email":"stefan.cobori@cobotec.ro","phone":"+4 0742104471","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-09-21"},{"id":213,"company":"BDS IT SERVICES S.R.L.","contact":"Bodgan Dragulin","country":"Romania","email":"bogdan.dragulinebdsit.ro","phone":"(+4) 021 780 22 68","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-09-21"},{"id":212,"company":"BlueSpace TECHNOLOGY","contact":"Marian SIMA","country":"Romania","email":"marian.sima@bstech.ro","phone":"+40.21.569.54.85","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-09-21"},{"id":210,"company":"MarcTel-S.I.T.","contact":"Mihai IAKAB","country":"Romania","email":"mihai.iakab@marctel.ro","phone":"+ 40 21 410 14 16","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-09-21"},{"id":209,"company":"ComputerLand\u00ae","contact":"Alina Radulescu","country":"Romania","email":"alina.radulescu@computerland.ro","phone":"0745.757.581","source":"Unspecified","campaign":"No campaign","interest":"HLS","created":"2025-09-21"},{"id":206,"company":"Special Telecomunications Service","contact":"Vlad-Alexandru Podoprigora","country":"Romania","email":"vlad.podoprigora@sts.ro","phone":"+40723 24 83 65","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-09-21"},{"id":205,"company":"INTERACTIVE SOFTWARE","contact":"Mihai PALADE","country":"Romania","email":"mihai.palade@interactive.com.ro","phone":"+(40) 372 159 658","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-09-21"},{"id":204,"company":"INTERACTIVE SOFTWARE","contact":"Gavril DORNEANU","country":"Romania","email":"gabi.dorneanu@interactive.com.ro","phone":"+ (40) 372 159 657","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-09-21"},{"id":202,"company":"SAMEDAY LOGISTICS","contact":"DORINA Romila","country":"Romania","email":"dorina.romila@samedaylogistics.ro","phone":"+40 748 773 064","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-09-21"},{"id":200,"company":"ISRAEL","contact":"Lior Ben Dor","country":"Romania","email":"ambassador-sec@bucharest.mfa.gov.il","phone":"+4 021 302 85 03","source":"Unspecified","campaign":"No campaign","interest":"Irrelevant","created":"2025-09-21"},{"id":199,"company":"Ministry of Economy","contact":"Claudia Munteanu","country":"Romania","email":"claudia.munteanu@dce.gov.ro","phone":"+40 744 658 165","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense, Intelligence","created":"2025-09-21"}]},"Idan Elmaliah":{"total":2,"country":{"Israel":1,"India":1},"source":{"Website Form":2},"campaign":{"HLS HE \u2013 Amit Livni + Idan Elmaliah":2},"leads":[{"id":277,"company":"","contact":"\u05dc\u05d9\u05d0\u05d5\u05e8 \u05d0\u05dc\u05d9\u05d6\u05e8\u05d5\u05d1/\u05d0\u05dc\u05e7\u05d8\u05e8\u05d9\u05e7\u05d5\u05dd \u05de\u05e2\u05e8\u05db\u05d5\u05ea","country":"Israel","email":"Electricom.isr@gmail.com","phone":"0509481242","source":"Website Form","campaign":"HLS HE \u2013 Amit Livni + Idan Elmaliah","interest":"","created":"2026-06-25"},{"id":275,"company":"\u05e1\u05de\u05d5\u05dc \u05d5\u05d5\u05e8\u05dc\u05d3 \u05d1\u05e2\"\u05de","contact":"\u05e8\u05d5\u05e0\u05d9 \u05de\u05e8\u05e7\u05d5\u05e1","country":"India","email":"ronniemarkus1980@gmail.com","phone":"0522534197","source":"Website Form","campaign":"HLS HE \u2013 Amit Livni + Idan Elmaliah","interest":"","created":"2026-06-25"}]},"Isabel Tlapa":{"total":9,"country":{"M\u00e9xico":3,"Chile":3,"Dominican Republic":1,"Panama":1,"CAM&CAR":1},"source":{"Website Form":3,"Tradeshow":2,"Registro":2,"SITIO WEB":2},"campaign":{"No campaign":4,"Telecom ES \u2013 Menachem Cohen + Isabel Tlapa":3,"DCDlatam25":2},"leads":[{"id":469,"company":"KIO Data Centers","contact":"LUIS LEONEL TURBIDES","country":"Dominican Republic","email":"lturbides@kio.tech","phone":"+1 829 745 2891","source":"Tradeshow","campaign":"DCDlatam25","interest":"","created":"2026-07-07"},{"id":453,"company":"KIO Data Centers","contact":"Alvin Melo","country":"Panama","email":"amelo@kio.tech","phone":"+50765770834","source":"Tradeshow","campaign":"DCDlatam25","interest":"","created":"2026-07-07"},{"id":449,"company":"CFE","contact":"Arq. Alejandra Ortiz Rocha","country":"M\u00e9xico","email":"alejandra.ortizr@cfe.mx","phone":"8332413300 Ext. 19660","source":"Registro","campaign":"No campaign","interest":"CI","created":"2026-07-07"},{"id":448,"company":"CFE","contact":"Lic. Luis Castillo Ortega","country":"M\u00e9xico","email":"luis.castilloo@cfe.mx","phone":"Tel: 229 989 9090 Ext. 47671","source":"Registro","campaign":"No campaign","interest":"HLS/CI","created":"2026-07-07"},{"id":447,"company":"Grupo NS Construcciones, S.A. de C.V.","contact":"Ra\u00fal Gonzalez","country":"M\u00e9xico","email":"rgdanes@gmail.com","phone":"Tel: 899) 995 2017 al 23 / Cel: (899) 319 1781","source":"SITIO WEB","campaign":"No campaign","interest":"CI","created":"2026-07-07"},{"id":445,"company":"LIBERTY","contact":"Gerardo Arias","country":"CAM&CAR","email":"gerardo.arias@libertycr.com","phone":"","source":"SITIO WEB","campaign":"No campaign","interest":"Data Center","created":"2026-07-07"},{"id":257,"company":"","contact":"Neftali donoso","country":"Chile","email":"nftldonoso@gmail.com","phone":"948514659","source":"Website Form","campaign":"Telecom ES \u2013 Menachem Cohen + Isabel Tlapa","interest":"","created":"2026-06-25"},{"id":256,"company":"","contact":"Diego Mu\u00f1oz","country":"Chile","email":"dam84esp@gmail.com","phone":"920214478","source":"Website Form","campaign":"Telecom ES \u2013 Menachem Cohen + Isabel Tlapa","interest":"","created":"2026-06-25"},{"id":255,"company":"","contact":"Iv\u00e1n Trivi\u00f1o","country":"Chile","email":"imtrivino@szingenieria.cl","phone":"+56959558709","source":"Website Form","campaign":"Telecom ES \u2013 Menachem Cohen + Isabel Tlapa","interest":"","created":"2026-06-25"}]},"Itzhak Schwartz":{"total":8,"country":{"Israel":3,"Germany":2,"Greece":1,"Unknown":1,"Netherlands":1},"source":{"Unspecified":8},"campaign":{"No campaign":8},"leads":[{"id":81,"company":"PHI CO MECHANISEAS","contact":"Vlasios Ntafalogamvros","country":"Greece","email":"van@phi-mechaniseas.com","phone":"+ 30 697 3007","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-08"},{"id":64,"company":"IAI","contact":"Yossi Dvora","country":"Israel","email":"ydvoral@elta.co.il","phone":"Tel+972-8-862 3420","source":"Unspecified","campaign":"No campaign","interest":"","created":"2025-05-07"},{"id":62,"company":"SCYTALYS Interoperability Systems","contact":"Spyros Sellinas","country":"Unknown","email":"spyros.sellinas@scytalys.com","phone":"+30 6949 124926","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-07"},{"id":61,"company":"mahlerinvestments","contact":"Joost van de Vooren","country":"Netherlands","email":"j.vandevooren@mahlerinvest.com","phone":"+31 (0)6 - 1212 1888","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-07"},{"id":59,"company":"SANMINA","contact":"Shay Cohen","country":"Israel","email":"shay.cohen@sanmina.com","phone":"+972 (0)4 9079340","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-07"},{"id":58,"company":"SANMINA","contact":"Michael Vurgaft","country":"Israel","email":"michael.vurgaft@sanmina.com","phone":"+972 (0) 4 9079856","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-07"},{"id":42,"company":"HENSOLDT","contact":"Arthur Fried","country":"Germany","email":"arthur.fried@hensoldt.net","phone":"+49 (0) 7364 9557 770","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-06"},{"id":41,"company":"HENSOLDT","contact":"Matteo Nespoli","country":"Germany","email":"matteo.nespoli@hensoldt.net","phone":"+49 (0) 172 5788 430","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-06"}]},"Jorge Campos":{"total":1,"country":{"Chile":1},"source":{"LinkedIn Campaign":1},"campaign":{"Mining-Chile-LinkedIn-V2":1},"leads":[{"id":238,"company":"AYCA (AyCA)","contact":"Giovanni Sebasti\u00e1n Cisternas Gatica","country":"Chile","email":"giovanni.cisternas.23@gmail.com","phone":"+56 9 8259 7623","source":"LinkedIn Campaign","campaign":"Mining-Chile-LinkedIn-V2","interest":"Mining","created":"2026-06-24"}]},"Jorge Pollak":{"total":52,"country":{"France":9,"Finland":4,"United States":4,"Germany":3,"Croatia":3,"Poland":3,"Czech Republic":2,"Unknown":2},"source":{"Tradeshow":52},"campaign":{"Eurosatory":52},"leads":[{"id":402,"company":"Junghans Defence","contact":"","country":"Germany","email":"info@junghans-defence.com","phone":"","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-28"},{"id":333,"company":"SVOS spol. s r.o.","contact":"\u0160t\u011bp\u00e1n \u010cern\u00fd","country":"Czech Republic","email":"cemys@armsvos.cz","phone":"+420 466 955 743 / +420 724 321 220","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":332,"company":"STRIX eMotors Ltd","contact":"Mirjana Novakovi\u0107","country":"Croatia","email":"mirjana.novakovic@strix-evolution.com","phone":"+386 (0)51 606 622","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":331,"company":"EAS Company","contact":"Muradov Dilshod","country":"Uzbekistan","email":"dilshod@eascompany.uz","phone":"+998 77 358 79 71","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":330,"company":"AP-FLYER Sp. z o.o.","contact":"Pawe\u0142 Mroczkowski","country":"Poland","email":"p.mroczkowski@ap-flyer.pl","phone":"+48 22 613 0487 / +48 601 170 494","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":329,"company":"AADS","contact":"Luigi Rodriguez","country":"Unknown","email":"luigi.rodriguez@aads-gib.com","phone":"+350 225 05432 / +350 56 425 000","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":327,"company":"Tyndall FX","contact":"Lionel Bouchard","country":"France","email":"lionel.bouchard@tyndallfx.com","phone":"+33 6 46 31 52 56","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":326,"company":"Variboats Oy","contact":"Jussi Piispanen","country":"Finland","email":"jussi@variboats.fi","phone":"+358 440 348555","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":325,"company":"Szcz\u0119\u015bniak Pojazdy Specjalne Sp. z o.o.","contact":"Paulina Nogowczyk","country":"Poland","email":"pnogowczyk@pszszczesniak.pl","phone":"+48 604 471 727 / +48 33 828 77 60","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":324,"company":"PGZ / Huta Stalowa Wola S.A.","contact":"Magdalena Kraso\u0144","country":"Poland","email":"m.krason@hsw.pl","phone":"785 751 049 / 15 813 55 41","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":323,"company":"CSG Land Systems","contact":"Martin Kla\u010dman","country":"Slovakia","email":"martin.klacman@msmls.sk","phone":"+421 904 222 110","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":322,"company":"Mastsystem Int'l Oy","contact":"Virpi Krohns","country":"Finland","email":"virpi.krohns@mastsystem.com","phone":"+358 20 775 0817 / +358 40 032 6688","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":321,"company":"Shadow nautics d.o.o.","contact":"Jerko Ivankovi\u0107","country":"Croatia","email":"jerko@shadow-nautics.eu","phone":"+385 98 603 4 64","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":320,"company":"FFG Flensburger Fahrzeugbau GmbH","contact":"Benjamin Lindsay","country":"Germany","email":"benjamin.lindsay@ffg-flensburg.de","phone":"+49 461 4812-430 / +49 152 0850 7694","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":319,"company":"WEO Corporation Pte Ltd","contact":"Eric Cheung","country":"Singapore","email":"eric.cheung@weocorp.com","phone":"+65 6776 1007 / +65 9028 6028","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":318,"company":"Guardiaris d.o.o.","contact":"Miha Pov\u0161in","country":"Slovenia","email":"povsinm@guardiaris.com","phone":"+386 64 117 980","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":317,"company":"McQ Inc.","contact":"Scott Fournier","country":"United States","email":"sfournier@mcqinc.com","phone":"540.373.2374 / 808.291.6580","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":316,"company":"DOK-ING Security and Defence","contact":"Konstantin Darmaniyan","country":"Croatia","email":"konstantin.darmaniyan@zg.t-com.hr","phone":"+385 91 4823 897","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":315,"company":"Metravib Defence (ACOEM Group)","contact":"Laurent Galindo","country":"France","email":"laurent.galindo@acoem.com","phone":"+33 1 45 33 77 73 / +33 6 73 11 37 52","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":314,"company":"HGH Syst\u00e8mes Infrarouges","contact":"Alice van Doesburg","country":"France","email":"alice.vandoesburg@hgh-infrared.com","phone":"+33 (0)1 69 35 47 75 / +33 (0)6 08 06 62 71","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":313,"company":"Workswell","contact":"Jakub Slama","country":"Czech Republic","email":"jakub.slama@workswell.eu","phone":"+420 778 092 490","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":312,"company":"BlueSpace Technology","contact":"Marian Sima","country":"Romania","email":"marian.sima@bstech.ro","phone":"+40 21 569 54 85 / +40 747 246 568","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":311,"company":"BlueSpace Technology","contact":"Constantin Pintilie","country":"Romania","email":"constantin.pintilie@bstech.ro","phone":"+40 722 558 006 / +40 21 569 54 85","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":310,"company":"PASS-Dynamics srl","contact":"Gianluca Perotto","country":"Italy","email":"g.perotto@pass-dynamics.com","phone":"(+39) 389 16 77 887","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":309,"company":"TMS-INT","contact":"Grant Anderson","country":"Unknown","email":"grant@tms-int.com","phone":"+27 83 629 8698 / +27 11 462 6079","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":308,"company":"Mitekas, JSC","contact":"Vaidotas Rutkauskas","country":"Lithuania","email":"sales@mitekas.com","phone":"+370 619 11 388","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":307,"company":"i3system, Inc.","contact":"Joseph Choi","country":"South Korea","email":"yoseph.choi@i3system.com","phone":"+82-70-4944-7734 / +82-10-7209-6177","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":306,"company":"OTTO Excellence","contact":"Pete Castiglione","country":"United States","email":"pete.castiglione@ottoexcellence.com","phone":"847.654.8519 / 224.651.2174","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":305,"company":"Aksum Armored Vehicles","contact":"Tamer Jaber","country":"United Arab Emirates","email":"tamer@aksumarmored.com","phone":"+971 55 111 8808","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":304,"company":"Copenhagen Sensor Technology A/S (CST)","contact":"Christian Valeur-Meller","country":"Denmark","email":"cvm@copst.com","phone":"+45 23 30 21 92","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":303,"company":"Copenhagen Sensor Technology A/S (CST)","contact":"Casper Flintholm Vahlers","country":"Denmark","email":"cfv@copst.com","phone":"+45 23 30 29 54","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":302,"company":"Senop Oy","contact":"Mikael Ikonen","country":"Finland","email":"mikael.ikonen@senop.fi","phone":"+358 50 472 4498 / +358 20 734 3500","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":301,"company":"Savox Communications Oy Ab (Ltd)","contact":"Kevin van Eijk","country":"Finland","email":"kevin.vaneijk@savox.com","phone":"+31 6 1888 0768","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":300,"company":"Cerbair","contact":"Jean Abadie","country":"France","email":"jean.abadie@cerbair.com","phone":"+33 6 89 34 17 46","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":299,"company":"OpenWorks Engineering","contact":"Nicola Irving","country":"United Kingdom","email":"nicola.irving@openworksengineering.com","phone":"+44 7593 093844 / +44 1434 400469","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":296,"company":"Bertin Technologies SAS","contact":"Hadrien Pinot","country":"France","email":"hadrien.pinot@bertin.group","phone":"+33 (0)6 80 26 80 06","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":297,"company":"Bertin Technologies SAS","contact":"Agathe Cadier","country":"France","email":"agathe.cadier@bertin.group","phone":"+33 6 33 46 61 81","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":295,"company":"Bertin Exensor AB","contact":"Patrick Pagden","country":"Sweden","email":"patrick.pagden@bertin.group","phone":"+46 730 433 566","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":293,"company":"Telegrafia a.s.","contact":"Petra Rychtar\u010d\u00edkov\u00e1","country":"Slovakia","email":"prychtarcikova@telegrafia.sk","phone":"+421 917 839 988","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":292,"company":"Pro Patria Electronics","contact":"Istvan Bardach","country":"Hungary","email":"istvan.bardach@propatria-inc.com","phone":"+36 1 459 2051 / +36 20 488 6756","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":290,"company":"Neurobus.ai","contact":"Florian Corgnou","country":"France","email":"florian@neurobus.ai","phone":"","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":291,"company":"Neurobus.ai","contact":"Nicolas Bourdis","country":"France","email":"nicolas@neurobus.ai","phone":"","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":289,"company":"Comand AI","contact":"Simon Rio","country":"France","email":"simon.rio@comand.ai","phone":"+33 (0)16 19 03 78 34","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":288,"company":"Rud Pedersen Public Affairs","contact":"Line Tresselt","country":"Norway","email":"line@rudpedersen.com","phone":"+47 934 29 356","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":287,"company":"Diehl Defence GmbH & Co. KG","contact":"Raffael Rudel","country":"Germany","email":"Raffael.Rudel@diehl-defence.com","phone":"","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":286,"company":"Leonardo DRS","contact":"Keith Chalmers","country":"United States","email":"keith.chalmers@drsintl.com","phone":"+44 (0)7798 877822","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":285,"company":"Leonardo DRS","contact":"Bruce Scheel","country":"United States","email":"bruce.scheel@drs.com","phone":"+1 321 493 5063","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":284,"company":"Indra Group","contact":"Javier Ripio Echavarr\u00eda","country":"Spain","email":"jripio@indra.es","phone":"+34 646 773 792","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":283,"company":"Frequentis Middle East Limited","contact":"Ambra Buccarelli","country":"United Arab Emirates","email":"ambra.buccarelli@frequentis.com","phone":"+971 52 678 5658","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":282,"company":"Intracom Defense","contact":"Vasilis Papadimitriou","country":"Greece","email":"vpapadimitriou@intracomdefense.com","phone":"+30 210 667 8191 / +30 697 602 515","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":281,"company":"DRS RADA Technologies Ltd.","contact":"Guy Avitsur","country":"Israel","email":"guyav@drsrada.com","phone":"+972 54-816-5498","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"},{"id":280,"company":"NetlineTech","contact":"Shai Palti","country":"Israel","email":"shaip@netlinetech.com","phone":"+972 54-5409418 / +972 3-6068100","source":"Tradeshow","campaign":"Eurosatory","interest":"","created":"2026-06-25"}]},"Joseph Dov Kohan":{"total":1,"country":{"Spain":1},"source":{"Website Form":1},"campaign":{"Shelters SP - Yosi":1},"leads":[{"id":537,"company":"ALFA RIVER","contact":"Mariana Eufracio","country":"Spain","email":"meufracio@alfariver.com","phone":"695434286","source":"Website Form","campaign":"Shelters SP - Yosi","interest":"","created":"2026-07-09"}]},"Kobi Sahar":{"total":30,"country":{"Unknown":8,"Germany":3,"Czech Republic":3,"Italy":3,"Thailand":2,"Israel":2,"Greece":2,"Armenia":2},"source":{"Unspecified":25,"Website Form":5},"campaign":{"No campaign":25,"Defense EN \u2013 Kobi Sahar":5},"leads":[{"id":267,"company":"","contact":"HUSEYIN OFLAZ","country":"Turkey","email":"huseyinoflaz@aselsan.com","phone":"00905387600128","source":"Website Form","campaign":"Defense EN \u2013 Kobi Sahar","interest":"","created":"2026-06-25"},{"id":266,"company":"","contact":"James Blevins","country":"United States","email":"james.a.blevins@l3harris.com","phone":"4692475923","source":"Website Form","campaign":"Defense EN \u2013 Kobi Sahar","interest":"","created":"2026-06-25"},{"id":265,"company":"","contact":"Sittikorn Kangsadan","country":"Thailand","email":"sittikorn.k@planetcomm.com","phone":"6627922400","source":"Website Form","campaign":"Defense EN \u2013 Kobi Sahar","interest":"","created":"2026-06-25"},{"id":264,"company":"bertin.group","contact":"Breymand Marie","country":"France","email":"marie.breymand@bertin.group","phone":"","source":"Website Form","campaign":"Defense EN \u2013 Kobi Sahar","interest":"","created":"2026-06-25"},{"id":263,"company":"Planet Communications Asia PLC.","contact":"Sittikorn Kangsadan","country":"Thailand","email":"sittikorn.k@planetcomm.com","phone":"66815590203","source":"Website Form","campaign":"Defense EN \u2013 Kobi Sahar","interest":"","created":"2026-06-25"},{"id":197,"company":"KNDS","contact":"Anton SCHMIDT","country":"Germany","email":"anton.schmidt@knds.de","phone":"+49 89 8140 3688","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-06-03"},{"id":196,"company":"RAFAEL ADVANCED DEFENSE SYSTEMS LTD.","contact":"Eugene Kilshtok","country":"Israel","email":"eugenek@rafael.co.il","phone":"972-73-3366837","source":"Unspecified","campaign":"No campaign","interest":"Irrelevant","created":"2025-06-03"},{"id":195,"company":"DEF TECH","contact":"Matus Luhovy","country":"Slovakia","email":"matus.luhovy@deftech.eu","phone":"+421 917 269 719","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-06-03"},{"id":194,"company":"nrb,","contact":"MIROSLAV TYM","country":"Czech Republic","email":"apr@mtym.cz","phone":"+420 777 217 266","source":"Unspecified","campaign":"No campaign","interest":"Irrelevant","created":"2025-06-03"},{"id":193,"company":"CZECHO ISRAELI","contact":"Ondrej Bockay","country":"Czech Republic","email":"ondrej.bockay@cisok.cz","phone":"+420 606 726 354","source":"Unspecified","campaign":"No campaign","interest":"Irrelevant","created":"2025-06-03"},{"id":192,"company":"Excalibur Army","contact":"Jan Vostrejz","country":"Unknown","email":"jan.vostrejz@excaliburarmy.eu","phone":"+ 420 733 772 797","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-06-03"},{"id":191,"company":"RAFAEL ADVANCED DEFENSE SYSTEMS LTD.","contact":"Col ret Jan Sedliacik","country":"Unknown","email":"sedliacikj@seznam.com","phone":"+420-739-641-469","source":"Unspecified","campaign":"No campaign","interest":"Irrelevant","created":"2025-06-03"},{"id":190,"company":"ALITER","contact":"Denisa Sepesiova","country":"Unknown","email":"denisa.sepesiovaldaliter.com","phone":"+ 421 2 5564 6350","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-06-03"},{"id":189,"company":"MESIT","contact":"Miroslav Kucera","country":"Czech Republic","email":"miroslav.kucera@mesit.cz","phone":"+420 606 786 980","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-06-03"},{"id":187,"company":"RHEINMETALL","contact":"K. Lukas Klomburg","country":"Unknown","email":"lukas.klomburg@rheinmetall.com","phone":"+49 421 1080 4430","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-06-03"},{"id":186,"company":"Omnisys","contact":"Yoram Shimoni","country":"Unknown","email":"yorams@omnisys.co.il","phone":"+972-52-366-3413","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-06-03"},{"id":185,"company":"GETSENSE","contact":"Patrik Fojtu","country":"Unknown","email":"fojtu@getsense.eu","phone":"+421 907 88 52 51","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-06-03"},{"id":184,"company":"STV GROUP","contact":"Dominik Drda","country":"Unknown","email":"dominik.drda@stvgroup.cz","phone":"+420 773 249 505","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-06-03"},{"id":73,"company":"Eight Bells LTD","contact":"Nikolaos KONTOPIDIS","country":"Greece","email":"nikos.kontopidis@8bellsresearch.com","phone":"+30 2106444553","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-08"},{"id":71,"company":"Locator","contact":"ARMAN KHACHATRYAN","country":"Armenia","email":"khachatryan@locator.am","phone":"+374 96 000055","source":"Unspecified","campaign":"No campaign","interest":"Irrelevant","created":"2025-05-08"},{"id":70,"company":"INOGATE","contact":"VAHRAM TEPELIKYAN","country":"Armenia","email":"vahram.tepelikyan@inogate.com","phone":"+374 96400435","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-08"},{"id":55,"company":"UVision Smart Loitering Systems","contact":"Jorge Pinievsky","country":"Israel","email":"jorgep@uvisionuav.com","phone":"+972.9.749.6822","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-07"},{"id":52,"company":"Patria","contact":"Juha Joutsijoki","country":"Unknown","email":"juha.joutsijoki@patriagroup.com","phone":"+358 40 869 4048","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-07"},{"id":42,"company":"HENSOLDT","contact":"Arthur Fried","country":"Germany","email":"arthur.fried@hensoldt.net","phone":"+49 (0) 7364 9557 770","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-06"},{"id":41,"company":"HENSOLDT","contact":"Matteo Nespoli","country":"Germany","email":"matteo.nespoli@hensoldt.net","phone":"+49 (0) 172 5788 430","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-06"},{"id":39,"company":"Tool uni AB","contact":"Samuel Jonsson","country":"Sweden","email":"samuel.jonsson@tooluni.se","phone":"+ 46 705 11 10 33","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-06"},{"id":38,"company":"VICTORIA CNV S.r.l.","contact":"Agostino Sabeni","country":"Italy","email":"agostino.sabeni@vittoria.biz","phone":"+39 0426 900467","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-06"},{"id":37,"company":"CANTIERE NAVALE VITTORIA","contact":"Valentina Cristanini","country":"Italy","email":"valentina.cristanini@vittoria.biz","phone":"+39 346 0391794","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-06"},{"id":36,"company":"CANTIERE NAVALE VITTORIA","contact":"Francescomaria Tuccillo","country":"Italy","email":"francescomaria.tuccillo@vittoria.biz","phone":"+39 327 5843917","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-06"},{"id":33,"company":"THALES","contact":"Sarandis RAFTOPOULOS","country":"Greece","email":"sarandis.raftopoulos@thalesgroup.com","phone":"+30 210 66 84 416","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-06"}]},"Kobi Yehiel":{"total":2,"country":{"Spain":1,"Israel":1},"source":{"Website Form":1,"Unspecified":1},"campaign":{"Shelters SP - Yosi":1,"No campaign":1},"leads":[{"id":537,"company":"ALFA RIVER","contact":"Mariana Eufracio","country":"Spain","email":"meufracio@alfariver.com","phone":"695434286","source":"Website Form","campaign":"Shelters SP - Yosi","interest":"","created":"2026-07-09"},{"id":78,"company":"RAFAEL ADVANCED DEFENSE SYSTEMS LTD.","contact":"Roy Katz","country":"Israel","email":"royka@rafael.co.il","phone":"972-73-3366890","source":"Unspecified","campaign":"No campaign","interest":"Irrelevant","created":"2025-05-08"}]},"Menahem Cohen":{"total":12,"country":{"Chile":6,"Argentina":5,"Unknown":1},"source":{"LinkedIn Campaign":5,"Website Form":5,"Tradeshow":2},"campaign":{"Mining-Chile-LinkedIn-V2":5,"Telecom ES \u2013 Menachem Cohen + Isabel Tlapa":3,"MuniExpo Tel Aviv 2026":2,"Shelters SP - Yosi":1,"No campaign":1},"leads":[{"id":674,"company":"Grupo LURO","contact":"Franco Bonfanti","country":"Argentina","email":"franbonfanti@gmail.com","phone":"5491170801020","source":"LinkedIn Campaign","campaign":"Mining-Chile-LinkedIn-V2","interest":"","created":"2026-08-18"},{"id":611,"company":"Indumet S.R.L.","contact":"Aldo Ariel Lara","country":"Argentina","email":"aldoariellara@gmail.com","phone":"2604393656","source":"LinkedIn Campaign","campaign":"Mining-Chile-LinkedIn-V2","interest":"Otro","created":"2026-08-09"},{"id":609,"company":"Rio Tinto","contact":"Guillermo Antonio Rasgido","country":"Argentina","email":"rasgidoguillermo3@gmail.com","phone":"+54 291 511-4635","source":"LinkedIn Campaign","campaign":"Mining-Chile-LinkedIn-V2","interest":"Otro","created":"2026-08-09"},{"id":605,"company":"Siacci SpA","contact":"Cristian Mayorga","country":"Chile","email":"cristian@siacci.cl","phone":"+56982424846","source":"Website Form","campaign":"Shelters SP - Yosi","interest":"Solution / Project Inquiry","created":"2026-08-06"},{"id":597,"company":"COMTEC S.R.L.","contact":"Rodrigo Gomez Martinez","country":"Argentina","email":"rodrigogm@biotecexport.com.ar","phone":"+54 387 517-6020","source":"LinkedIn Campaign","campaign":"Mining-Chile-LinkedIn-V2","interest":"Comando y control unificado","created":"2026-07-27"},{"id":595,"company":"Minas pirquitas","contact":"Walter Gomez","country":"Argentina","email":"loco64gomez@gmail.com","phone":"+54 387 639-5282","source":"LinkedIn Campaign","campaign":"Mining-Chile-LinkedIn-V2","interest":"Otro","created":"2026-07-27"},{"id":257,"company":"","contact":"Neftali donoso","country":"Chile","email":"nftldonoso@gmail.com","phone":"948514659","source":"Website Form","campaign":"Telecom ES \u2013 Menachem Cohen + Isabel Tlapa","interest":"","created":"2026-06-25"},{"id":256,"company":"","contact":"Diego Mu\u00f1oz","country":"Chile","email":"dam84esp@gmail.com","phone":"920214478","source":"Website Form","campaign":"Telecom ES \u2013 Menachem Cohen + Isabel Tlapa","interest":"","created":"2026-06-25"},{"id":255,"company":"","contact":"Iv\u00e1n Trivi\u00f1o","country":"Chile","email":"imtrivino@szingenieria.cl","phone":"+56959558709","source":"Website Form","campaign":"Telecom ES \u2013 Menachem Cohen + Isabel Tlapa","interest":"","created":"2026-06-25"},{"id":254,"company":"Alcaldia de Calera de Tango","contact":"Hortencia Mora Catalan","country":"Chile","email":"hmora@calderatango.net","phone":"+569 7450 9921","source":"Tradeshow","campaign":"MuniExpo Tel Aviv 2026","interest":"Smart City","created":"2026-06-25"},{"id":253,"company":"Municipalidad de Rapa Nui","contact":"Ricardo Espinoza Alvarado","country":"Chile","email":"ricardokonui@gmail.com, concejales@rapanui.net","phone":"+56 99136 8382","source":"Tradeshow","campaign":"MuniExpo Tel Aviv 2026","interest":"Smart City","created":"2026-06-25"},{"id":239,"company":"BTS LTDA","contact":"Fernando Bueno","country":"Unknown","email":"fbueno2005@yahoo.com","phone":"(591) 77741144","source":"Website Form","campaign":"No campaign","interest":"","created":"2026-06-24"}]},"Omer Laviv":{"total":4,"country":{"Uganda":2,"Mozambique":1,"Nigeria":1},"source":{"Website Form":4},"campaign":{"General \u2013 Joseph Dov Kohan":2,"en/contact":2},"leads":[{"id":566,"company":"Briskline Consults Ltd","contact":"Sadat Mutebi","country":"Uganda","email":"mutebisadat@brisklineconsults.com","phone":"0702903245","source":"Website Form","campaign":"General \u2013 Joseph Dov Kohan","interest":"","created":"2026-07-27"},{"id":565,"company":"","contact":"Nissim","country":"Mozambique","email":"nissimoshe@gmail.com","phone":"+258840323469","source":"Website Form","campaign":"General \u2013 Joseph Dov Kohan","interest":"","created":"2026-07-27"},{"id":540,"company":"Interprise Vision Limited","contact":"Francis Odukuye","country":"Nigeria","email":"fodukuye@nterprisevision.com","phone":"+2348136306518","source":"Website Form","campaign":"en/contact","interest":"","created":"2026-07-16"},{"id":538,"company":"Briskline Consults Ltd","contact":"Sadat Mutebi","country":"Uganda","email":"mutebisadat@brisklineconsults.com","phone":"0702903245","source":"Website Form","campaign":"en/contact","interest":"","created":"2026-07-12"}]},"Rami Revivo":{"total":4,"country":{"Israel":3,"United States":1},"source":{"Website Form":4},"campaign":{"Towers HE \u2013 Rami Revivo":2,"General \u2013 Joseph Dov Kohan":1,"he/contact":1},"leads":[{"id":604,"company":"FAA","contact":"Kathleen Wingo","country":"United States","email":"kathleen.a-ctr.wingo@faa.gov","phone":"4058759679","source":"Website Form","campaign":"General \u2013 Joseph Dov Kohan","interest":"Solution / Project Inquiry","created":"2026-08-04"},{"id":422,"company":"","contact":"\u05d2\u05d9\u05d0 \u05db\u05d4\u05df","country":"Israel","email":"guy1407@gmail.com","phone":"0526601282","source":"Website Form","campaign":"he/contact","interest":"","created":"2026-06-28"},{"id":279,"company":"","contact":"\u05d7\u05d6\u05d5\u05d8 \u05d0\u05d9\u05dc\u05df","country":"Israel","email":"ilan@elta.co.il","phone":"052-6180643","source":"Website Form","campaign":"Towers HE \u2013 Rami Revivo","interest":"","created":"2026-06-25"},{"id":278,"company":"","contact":"\u05e2\u05e8\u05df \u05e1\u05d2\u05dc","country":"Israel","email":"infranet5g@gmail.com","phone":"0542801974","source":"Website Form","campaign":"Towers HE \u2013 Rami Revivo","interest":"","created":"2026-06-25"}]},"Ramiro Ibarra":{"total":10,"country":{"Mexico":6,"USA":2,"Brazil":1,"Colombia":1},"source":{"Tradeshow":10},"campaign":{"DCDlatam25":10},"leads":[{"id":475,"company":"Grupo Salinas","contact":"Rogelio Garc\u00eda Cabrera","country":"Mexico","email":"rogarcia@qubitms.mx","phone":"","source":"Tradeshow","campaign":"DCDlatam25","interest":"","created":"2026-07-07"},{"id":472,"company":"CloudHQ","contact":"Matt Moews","country":"USA","email":"mmoews@cloudhq.com","phone":"5715817682","source":"Tradeshow","campaign":"DCDlatam25","interest":"","created":"2026-07-07"},{"id":470,"company":"Fermaca","contact":"Manuel Calvillo G","country":"Mexico","email":"mcalvillog@fermacadreams.com.mx","phone":"","source":"Tradeshow","campaign":"DCDlatam25","interest":"","created":"2026-07-07"},{"id":468,"company":"ODATA - An Aligned Data Centers Company","contact":"Kelvin Tamura","country":"Brazil","email":"kelvin.tamura@odata.com.br","phone":"","source":"Tradeshow","campaign":"DCDlatam25","interest":"","created":"2026-07-07"},{"id":467,"company":"Scala Datacenters","contact":"Julio Cesar Cortes Hernandez","country":"Mexico","email":"julio.cortes@scaladatacenters.com","phone":"5649330705","source":"Tradeshow","campaign":"DCDlatam25","interest":"","created":"2026-07-07"},{"id":461,"company":"Axtel","contact":"JESUS ROSALES","country":"Mexico","email":"jrosales@axtel.com.mx","phone":"8110777940","source":"Tradeshow","campaign":"DCDlatam25","interest":"","created":"2026-07-07"},{"id":460,"company":"Amazon Web Services","contact":"Javier Cristancho","country":"Colombia","email":"javicris@amazon.com","phone":"","source":"Tradeshow","campaign":"DCDlatam25","interest":"","created":"2026-07-07"},{"id":458,"company":"Banorte","contact":"Hector Aceves","country":"Mexico","email":"hector.aceves.gamundi@banorte.com","phone":"","source":"Tradeshow","campaign":"DCDlatam25","interest":"","created":"2026-07-07"},{"id":456,"company":"FiberHome","contact":"Clarisa Guardiola","country":"Mexico","email":"clarisaguardiolam@gmail.com","phone":"000000000","source":"Tradeshow","campaign":"DCDlatam25","interest":"","created":"2026-07-07"},{"id":450,"company":"DLR","contact":"AJ Nagar","country":"USA","email":"anagar@digitalrealty.com","phone":"8773783282","source":"Tradeshow","campaign":"DCDlatam25","interest":"","created":"2026-07-07"}]},"Ra\u00fal Pe\u00f1ailillo":{"total":21,"country":{"Chile":19,"Unknown":1,"Spain":1},"source":{"LinkedIn Campaign":20,"Website Form":1},"campaign":{"Mining-Chile-LinkedIn-V2":18,"Mining-Chile-LinkedIn-V1":2,"Shelters SP - Yosi":1},"leads":[{"id":675,"company":"AQC Ingenier\u00eda y Movimiento de Tierra","contact":"Francisco Castillo Tapia","country":"Chile","email":"panchocastillo.t@gmail.com","phone":"+56 9 9884 8303","source":"LinkedIn Campaign","campaign":"Mining-Chile-LinkedIn-V2","interest":"Seguridad y protecci\u00f3n","created":"2026-08-19"},{"id":673,"company":"Mineria AreaElectrica","contact":"Genaro Marambio","country":"Chile","email":"genaromarambio@gmail.com","phone":"+56 9 5521 0764","source":"LinkedIn Campaign","campaign":"Mining-Chile-LinkedIn-V2","interest":"","created":"2026-08-18"},{"id":610,"company":"TEPSAC - FAENA CENTINELA","contact":"BASTIAN CARLOS JERALDO ARDILES","country":"Chile","email":"bastian.maquinarias@gmail.com","phone":"935870924","source":"LinkedIn Campaign","campaign":"Mining-Chile-LinkedIn-V2","interest":"Otro","created":"2026-08-09"},{"id":608,"company":"Gepmeta","contact":"Sim\u00f3n Alfonso Pe\u00f1a Banda","country":"Chile","email":"Spena@gepmeta.cl","phone":"+56 9 3432 3413","source":"LinkedIn Campaign","campaign":"Mining-Chile-LinkedIn-V2","interest":"Seguridad y protecci\u00f3n","created":"2026-08-09"},{"id":607,"company":"BAI Group","contact":"Guido Fr\u00e1vega Bordoli","country":"Chile","email":"guidofravega@gmail.com","phone":"+593 99 944 2974","source":"LinkedIn Campaign","campaign":"Mining-Chile-LinkedIn-V2","interest":"Seguridad y protecci\u00f3n","created":"2026-08-09"},{"id":605,"company":"Siacci SpA","contact":"Cristian Mayorga","country":"Chile","email":"cristian@siacci.cl","phone":"+56982424846","source":"Website Form","campaign":"Shelters SP - Yosi","interest":"Solution / Project Inquiry","created":"2026-08-06"},{"id":598,"company":"Enerfrost","contact":"Andres Vera Arcos","country":"Chile","email":"andres_vera_a@hotmail.com","phone":"+56 9 6480 1545","source":"LinkedIn Campaign","campaign":"Mining-Chile-LinkedIn-V2","interest":"Otro","created":"2026-07-27"},{"id":596,"company":"2CR Consultores Ltda","contact":"Rodrigo Herrera Urrutia","country":"Unknown","email":"rodrigo.herrera.urrutia@gmail.com","phone":"968451264","source":"LinkedIn Campaign","campaign":"Mining-Chile-LinkedIn-V2","interest":"Seguridad y protecci\u00f3n","created":"2026-07-27"},{"id":539,"company":"Enerfrost","contact":"Andres Vera Arcos","country":"Chile","email":"andres_vera_a@hotmail.com","phone":"+56 9 6480 1545","source":"LinkedIn Campaign","campaign":"Mining-Chile-LinkedIn-V2","interest":"","created":"2026-07-14"},{"id":444,"company":"Importaciones y servicios Advanced computing Technologies SA","contact":"Luis Miranda Chavarr\u00eda","country":"Chile","email":"lmirandach@gmail.com","phone":"+56 9 7312 7672","source":"LinkedIn Campaign","campaign":"Mining-Chile-LinkedIn-V2","interest":"","created":"2026-07-01"},{"id":443,"company":"Geodetec Ingenier\u00eda","contact":"Mat\u00edas Rodrigo P\u00e9rez Araya","country":"Chile","email":"matias.rodrigo1989@gmail.com","phone":"952151084","source":"LinkedIn Campaign","campaign":"Mining-Chile-LinkedIn-V2","interest":"","created":"2026-06-29"},{"id":252,"company":"ICMAS","contact":"Luis olivares villalobos","country":"Chile","email":"luisalvaroluisalvaro@gmail.com","phone":"+56 9 5414 6428","source":"LinkedIn Campaign","campaign":"Mining-Chile-LinkedIn-V2","interest":"","created":"2026-06-25"},{"id":251,"company":"EUROHINCA","contact":"Javier Vega Aramburu","country":"Spain","email":"mementosj@hotmail.com","phone":"+34 669 07 12 24","source":"LinkedIn Campaign","campaign":"Mining-Chile-LinkedIn-V2","interest":"","created":"2026-06-25"},{"id":245,"company":"Morrison Mining Company","contact":"Sergio Conejeros Diaz","country":"Chile","email":"sergio.conejerosd@gmail.com","phone":"9624253112","source":"LinkedIn Campaign","campaign":"Mining-Chile-LinkedIn-V2","interest":"Mining","created":"2026-06-24"},{"id":244,"company":"Centro de Transferencia de Tecnolog\u00edas Avanzadas, SpA. CETTA","contact":"Dr.-Ing. LUIS CERDA ORTIZ","country":"Chile","email":"luiscerdaortiz@yahoo.com","phone":"+56 9 3922 6609","source":"LinkedIn Campaign","campaign":"Mining-Chile-LinkedIn-V2","interest":"Mining","created":"2026-06-24"},{"id":238,"company":"AYCA (AyCA)","contact":"Giovanni Sebasti\u00e1n Cisternas Gatica","country":"Chile","email":"giovanni.cisternas.23@gmail.com","phone":"+56 9 8259 7623","source":"LinkedIn Campaign","campaign":"Mining-Chile-LinkedIn-V2","interest":"Mining","created":"2026-06-24"},{"id":236,"company":"Telef\u00f3nica","contact":"Josefa Pineda Meneses","country":"Chile","email":"josefanya@hotmail.com","phone":"+56 9 9849 8380","source":"LinkedIn Campaign","campaign":"Mining-Chile-LinkedIn-V1","interest":"Mining","created":"2026-06-24"},{"id":237,"company":"Agualum Minerals trading","contact":"Manuel Aguero","country":"Chile","email":"manuel.aguero@agualum.cl","phone":"949146765","source":"LinkedIn Campaign","campaign":"Mining-Chile-LinkedIn-V2","interest":"Mining","created":"2026-06-24"},{"id":235,"company":"Agricultura y Miner\u00eda Ecol\u00f3gica","contact":"Enrique Silva Le Fort","country":"Chile","email":"enriquesilva7@gmail.com","phone":"+56 9 9520 9358","source":"LinkedIn Campaign","campaign":"Mining-Chile-LinkedIn-V2","interest":"Mining","created":"2026-06-24"},{"id":234,"company":"Sattel Chile - Soluciones Tecnol\u00f3gicas e Innovadoras","contact":"Francisco Aguero","country":"Chile","email":"faguero@sattelchile.cl","phone":"+56 9 7748 6446","source":"LinkedIn Campaign","campaign":"Mining-Chile-LinkedIn-V2","interest":"Mining","created":"2026-06-24"},{"id":233,"company":"Inclusive Group","contact":"Daniel Paillacar G.","country":"Chile","email":"jeremias.paillacar@gmail.com","phone":"+56 9 8828 2035","source":"LinkedIn Campaign","campaign":"Mining-Chile-LinkedIn-V1","interest":"Mining","created":"2026-06-24"}]},"Shay Haas":{"total":65,"country":{"Greece":16,"Romania":14,"Poland":13,"Unknown":5,"Israel":4,"Cyprus":3,"India":2,"Canada":2},"source":{"Unspecified":38,"Tradeshow":17,"Website Form":10},"campaign":{"No campaign":42,"Civilian Security Conference":17,"Telecom EN \u2013 Shay Haas":5,"HLS EN \u2013 Shay Haas":1},"leads":[{"id":442,"company":"Maw","contact":"Marek Wosko","country":"Poland","email":"wosko@maw.pl","phone":"501206000","source":"Tradeshow","campaign":"Civilian Security Conference","interest":"","created":"2026-06-29"},{"id":441,"company":"Ministry of National Defence","contact":"Lt. Col. Marcin WOLSKI","country":"Poland","email":"martinwalki@mon.gov.pl","phone":"+48 261 874 792","source":"Tradeshow","campaign":"Civilian Security Conference","interest":"","created":"2026-06-29"},{"id":440,"company":"PGZ","contact":"ROBERT BRAITER","country":"Poland","email":"robert.braiter@pgzsa.pl","phone":"(+48) 22 718 43 00","source":"Tradeshow","campaign":"Civilian Security Conference","interest":"","created":"2026-06-29"},{"id":439,"company":"DOBROWOLSKI","contact":"Andrzej Wi\u0119c\u0142aw","country":"Poland","email":"andrzej wieclaw@dobrowolski.com.pl","phone":"+48 693 857 369","source":"Tradeshow","campaign":"Civilian Security Conference","interest":"","created":"2026-06-29"},{"id":438,"company":"KenBIT","contact":"Kamil Koenig","country":"Poland","email":"kkoenig@kenbit.pl","phone":"+48 22 862 43 80","source":"Tradeshow","campaign":"Civilian Security Conference","interest":"","created":"2026-06-29"},{"id":437,"company":"JPBC","contact":"Piotr Pernach","country":"POLAND","email":"p.pernach@jp-be.pl","phone":"+48 505 537 423","source":"Tradeshow","campaign":"Civilian Security Conference","interest":"","created":"2026-06-29"},{"id":436,"company":"MODULAR sistem Sp. z o.o.","contact":"Barthomiej Przygodlaki","country":"Poland","email":"bartp@modularsystem.pl","phone":"+48 532 744 269","source":"Tradeshow","campaign":"Civilian Security Conference","interest":"","created":"2026-06-29"},{"id":435,"company":"Defence Production Hub","contact":"Mateusz Sarosiek","country":"Poland","email":"m.sarosiek@dphub.eu","phone":"+48 727 009 178","source":"Tradeshow","campaign":"Civilian Security Conference","interest":"","created":"2026-06-29"},{"id":434,"company":"PAG","contact":"Aron J. Kudelski-Lichtenberg","country":"Poland","email":"aron.kudelski-lichtenberg@pag.com.pl","phone":"882 663 688","source":"Tradeshow","campaign":"Civilian Security Conference","interest":"","created":"2026-06-29"},{"id":433,"company":"T4B","contact":"Agnieszka Wroblewska","country":"Poland","email":"agnieszka.wroblewska@t4b.com.pl","phone":"+48 603 727 729","source":"Tradeshow","campaign":"Civilian Security Conference","interest":"","created":"2026-06-29"},{"id":432,"company":"T4B","contact":"Marcin Roginski","country":"Poland","email":"marcin soginski@t4b.com.pl","phone":"+48 502 827 657","source":"Tradeshow","campaign":"Civilian Security Conference","interest":"","created":"2026-06-29"},{"id":431,"company":"AMW INVEST","contact":"Micha\u0142 Domi\u0144czak","country":"Poland","email":"m.dominczak@amwinvest.pl","phone":"+48 515 998 586","source":"Tradeshow","campaign":"Civilian Security Conference","interest":"","created":"2026-06-29"},{"id":430,"company":"AMW INVEST","contact":"Jaros\u0142aw Nowak","country":"Poland","email":"j.nowak@amwinvest.pl","phone":"+48 601 180 317","source":"Tradeshow","campaign":"Civilian Security Conference","interest":"","created":"2026-06-29"},{"id":429,"company":"BOURA CYBER","contact":"Amos Halfon","country":"Israel","email":"Amos.Halfon@BouraCyber.com","phone":"+972-54-7769507","source":"Tradeshow","campaign":"Civilian Security Conference","interest":"","created":"2026-06-29"},{"id":428,"company":"Corsight","contact":"Itai Fornari","country":"Israel","email":"itai.fornari@corsight.ai","phone":"+972 52 6745299","source":"Tradeshow","campaign":"Civilian Security Conference","interest":"","created":"2026-06-29"},{"id":427,"company":"Rubycomm","contact":"Marco Aviad","country":"Israel","email":"marco@rubycomm.com","phone":"+972 54 9292110","source":"Tradeshow","campaign":"Civilian Security Conference","interest":"","created":"2026-06-29"},{"id":426,"company":"Israel Embassy in Poland","contact":"Bar Sandarovich","country":"Poland","email":"bar.sandarovich@israeltrade.gov.il","phone":"+48 22 166 12 30","source":"Tradeshow","campaign":"Civilian Security Conference","interest":"","created":"2026-06-29"},{"id":274,"company":"","contact":"Chukwuemeka Okoye","country":"Nigeria","email":"chukwuemekanokoye@gmail.com","phone":"+2348034229962","source":"Website Form","campaign":"HLS EN \u2013 Shay Haas","interest":"","created":"2026-06-25"},{"id":261,"company":"","contact":"Prissadee Jackson Soontarapote","country":"Thailand","email":"soontarapote@gmail.com","phone":"0886654363","source":"Website Form","campaign":"Telecom EN \u2013 Shay Haas","interest":"","created":"2026-06-25"},{"id":262,"company":"","contact":"Rajnish Shetty","country":"India","email":"Rajnish.Shetty@tatacommunications.com","phone":"+919167275576","source":"Website Form","campaign":"Telecom EN \u2013 Shay Haas","interest":"","created":"2026-06-25"},{"id":260,"company":"","contact":"Joby","country":"United Arab Emirates","email":"joby.v@boldholding.ae","phone":"","source":"Website Form","campaign":"Telecom EN \u2013 Shay Haas","interest":"","created":"2026-06-25"},{"id":259,"company":"","contact":"Samundra timilsina","country":"Nepal","email":"barallaptop683@gmail.com","phone":"9819286525","source":"Website Form","campaign":"Telecom EN \u2013 Shay Haas","interest":"","created":"2026-06-25"},{"id":258,"company":"","contact":"Upendr Kumar Bharti","country":"India","email":"upendracivil0@gmail.com","phone":"8171810776","source":"Website Form","campaign":"Telecom EN \u2013 Shay Haas","interest":"","created":"2026-06-25"},{"id":243,"company":"Telkom SA SOC","contact":"Herman","country":"Unknown","email":"herman.singh@telkomsa-soc.co.za","phone":"+27 60 018 3796","source":"Website Form","campaign":"No campaign","interest":"","created":"2026-06-24"},{"id":242,"company":"Chartered Buying Group","contact":"Rayyaan al Abdalla","country":"Unknown","email":"procurement@charteredsbuying.com","phone":"+971556321579","source":"Website Form","campaign":"No campaign","interest":"","created":"2026-06-24"},{"id":241,"company":"NDC Construction Company","contact":"Kyle Huggins","country":"Unknown","email":"Kyle.Huggins@ndcconstructionco.com","phone":"8777632000","source":"Website Form","campaign":"No campaign","interest":"","created":"2026-06-24"},{"id":240,"company":"Blandon Systems","contact":"Jerry Good","country":"Unknown","email":"jerry.good@blandon-group.com","phone":"+44 7719 425673","source":"Website Form","campaign":"No campaign","interest":"","created":"2026-06-24"},{"id":218,"company":"GUVERNUL MINISTRY OF ECONOMY, ENTREPRENEURSHIP AND TOURISM","contact":"Miruna POPESCU","country":"Romania","email":"miruna.popescu@dce.gov.ro","phone":"+40 740 902 528","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense, Intelligence","created":"2025-09-21"},{"id":217,"company":"Ministry of Economy","contact":"Andreea Alina ZAHARIA","country":"Romania","email":"alina.zaharia@dce.gov.ro","phone":"+40 754 365 053","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense, Intelligence","created":"2025-09-21"},{"id":216,"company":"Centrul pentru Servicii de Radiocomunicatii","contact":"Mihai Ivanescu","country":"Romania","email":"mihai.ivanescu@csr.ro","phone":"+(4)021 311 68 50;","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-09-21"},{"id":214,"company":"COBOTEC","contact":"Stefan Cobori","country":"Romania","email":"stefan.cobori@cobotec.ro","phone":"+4 0742104471","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-09-21"},{"id":213,"company":"BDS IT SERVICES S.R.L.","contact":"Bodgan Dragulin","country":"Romania","email":"bogdan.dragulinebdsit.ro","phone":"(+4) 021 780 22 68","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-09-21"},{"id":212,"company":"BlueSpace TECHNOLOGY","contact":"Marian SIMA","country":"Romania","email":"marian.sima@bstech.ro","phone":"+40.21.569.54.85","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-09-21"},{"id":210,"company":"MarcTel-S.I.T.","contact":"Mihai IAKAB","country":"Romania","email":"mihai.iakab@marctel.ro","phone":"+ 40 21 410 14 16","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-09-21"},{"id":209,"company":"ComputerLand\u00ae","contact":"Alina Radulescu","country":"Romania","email":"alina.radulescu@computerland.ro","phone":"0745.757.581","source":"Unspecified","campaign":"No campaign","interest":"HLS","created":"2025-09-21"},{"id":206,"company":"Special Telecomunications Service","contact":"Vlad-Alexandru Podoprigora","country":"Romania","email":"vlad.podoprigora@sts.ro","phone":"+40723 24 83 65","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-09-21"},{"id":205,"company":"INTERACTIVE SOFTWARE","contact":"Mihai PALADE","country":"Romania","email":"mihai.palade@interactive.com.ro","phone":"+(40) 372 159 658","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-09-21"},{"id":204,"company":"INTERACTIVE SOFTWARE","contact":"Gavril DORNEANU","country":"Romania","email":"gabi.dorneanu@interactive.com.ro","phone":"+ (40) 372 159 657","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-09-21"},{"id":202,"company":"SAMEDAY LOGISTICS","contact":"DORINA Romila","country":"Romania","email":"dorina.romila@samedaylogistics.ro","phone":"+40 748 773 064","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-09-21"},{"id":200,"company":"ISRAEL","contact":"Lior Ben Dor","country":"Romania","email":"ambassador-sec@bucharest.mfa.gov.il","phone":"+4 021 302 85 03","source":"Unspecified","campaign":"No campaign","interest":"Irrelevant","created":"2025-09-21"},{"id":199,"company":"Ministry of Economy","contact":"Claudia Munteanu","country":"Romania","email":"claudia.munteanu@dce.gov.ro","phone":"+40 744 658 165","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense, Intelligence","created":"2025-09-21"},{"id":92,"company":"SignalGenerix","contact":"MARKOS PEFKAROS","country":"Cyprus","email":"m.pefkaros@signalgenerix.com","phone":"+357 25 870 072","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-11"},{"id":91,"company":"SignalGenerix","contact":"TASOS KOUNOUDES","country":"Cyprus","email":"tasos@signalgenerix.com","phone":"+357 25 870 072","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-11"},{"id":90,"company":"Hellenic Navy","contact":"Ioannis Drymousis","country":"Greece","email":"drymousisit@yahoo.com","phone":"+30 6956027791","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-11"},{"id":89,"company":"Aharon Yosef","contact":"Itzik Hakmon","country":"Israel","email":"itzik@ay-ltd.com","phone":"+972.8.8673402","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-11"},{"id":88,"company":"Hagenuk Marinekommunikation","contact":"Dipl .- Ing. Daniel Manuello","country":"Germany","email":"daniel.manuello@hmk.atlas-elektronik.com","phone":"+49 4347 714 - 132","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-11"},{"id":86,"company":"Mil Tech","contact":"Stephen Kioseoglou","country":"Greece","email":"kstef@miltech.gr","phone":"+30 210 66 47320 (int.","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-11"},{"id":84,"company":"HELLENIC COAST GUARD HQ Integrated Maritime Surveillance Bureau","contact":"Dionyssios CHRISTOFILIS","country":"Greece","email":"imsb@hcg.gr","phone":"210 4290392","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense, Intelligence","created":"2025-05-08"},{"id":81,"company":"PHI CO MECHANISEAS","contact":"Vlasios Ntafalogamvros","country":"Greece","email":"van@phi-mechaniseas.com","phone":"+ 30 697 3007","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-08"},{"id":80,"company":"Diablous","contact":"Mr alurdas","country":"Greece","email":"","phone":"","source":"Unspecified","campaign":"No campaign","interest":"Irrelevant","created":"2025-05-08"},{"id":79,"company":"Greek army","contact":"Spyros PAPAROUNAS","country":"Greece","email":"s.p.paparounas@army.gr","phone":"","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-08"},{"id":67,"company":"Air force","contact":"Dimitris Halkias","country":"Greece","email":"Dimitri_halkias@hotmail.com","phone":"","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-07"},{"id":66,"company":"Prisma Electronics SA","contact":"Spyros Konidaris","country":"Greece","email":"spyros.konidaris@prismael.com","phone":"+30 210 93 13 110","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-07"},{"id":63,"company":"VESSELFRONT","contact":"Constantine Abazis","country":"Greece","email":"costas@vesselfront.com","phone":"+30 210 428 5956","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense, Intelligence","created":"2025-05-07"},{"id":60,"company":"HELLENIC NATIONAL DEFENCE GENERAL STAFF","contact":"Major General Spyridon Karoumpalis","country":"Greece","email":"s.karoumpalis@hndgs.mil.gr","phone":"(+30) 210 657 6301","source":"Unspecified","campaign":"No campaign","interest":"Defense","created":"2025-05-07"},{"id":57,"company":"Incendia","contact":"FRANCIS DESJARDINS","country":"Canada","email":"f.desjardins@incendia.ca","phone":"450 327-0911 Poste 202","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-07"},{"id":56,"company":"Incendia","contact":"PATRICE RAYMOND","country":"Canada","email":"p.raymond@incendia.ca","phone":"1 866 327-0911 Poste 203","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-07"},{"id":54,"company":"","contact":"Dimitros Margaritis","country":"Cyprus","email":"Justvape1903@gmail.com","phone":"","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-07"},{"id":53,"company":"Army","contact":"VAGELIS Milatos","country":"Greece","email":"","phone":"00306948500682","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-07"},{"id":46,"company":"TBSP ENGINEERING S.A.","contact":"KIRIAKOS TSIGIROGLOU","country":"Greece","email":"tsigisa@tsigi.gr","phone":"+30 210 6628105","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-06"},{"id":45,"company":"TBSP ENGINEERING S.A.","contact":"JOHN TSIGIROGLOU","country":"Greece","email":"john.tsigiroglou@tbspengineering.gr","phone":"+30 2106628033","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-06"},{"id":44,"company":"VIKING LIFE-SAVING EQUIPMENT","contact":"DIMITRIS FOUSTERIS","country":"Greece","email":"DFO@viking-life.com","phone":"+30 22620 22441","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-06"},{"id":35,"company":"Hafted","contact":"Dimitrios Benetis","country":"Greece","email":"dimitrios.venetis@haf.gr","phone":"","source":"Unspecified","campaign":"No campaign","interest":"Defense","created":"2025-05-06"},{"id":34,"company":"SCYTALYS Interoperability Systems","contact":"Rafail Georgiadis","country":"Unknown","email":"rafail.georgiadis@scytalys.com","phone":"+30 6951 862310","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-06"},{"id":31,"company":"THESSINTEC","contact":"Michael B. Christides","country":"Greece","email":"m.christides@thessintec.eu","phone":"+30 2313 501334","source":"Unspecified","campaign":"No campaign","interest":"HLS, Intelligence","created":"2025-05-06"}]},"Sol Israelson":{"total":6,"country":{"Greece":4,"Dominican Republic":1,"Israel":1},"source":{"Unspecified":6},"campaign":{"No campaign":6},"leads":[{"id":85,"company":"HELLENIC MINISTRY OF DEFENCE General Directorate for Defence Investments & Armaments","contact":"loannis BOURAS","country":"Greece","email":"general.director@gdaee.mil.gr","phone":"+30 210 7466003","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-08"},{"id":82,"company":"Ministerio relaciones exteriores","contact":"Romulo Garcia marmolejo","country":"Dominican Republic","email":"rgarcia@consuladordgrecia.com","phone":"+30 694 530 1441","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense, Intelligence","created":"2025-05-08"},{"id":78,"company":"RAFAEL ADVANCED DEFENSE SYSTEMS LTD.","contact":"Roy Katz","country":"Israel","email":"royka@rafael.co.il","phone":"972-73-3366890","source":"Unspecified","campaign":"No campaign","interest":"Irrelevant","created":"2025-05-08"},{"id":73,"company":"Eight Bells LTD","contact":"Nikolaos KONTOPIDIS","country":"Greece","email":"nikos.kontopidis@8bellsresearch.com","phone":"+30 2106444553","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-08"},{"id":65,"company":"AMYNA","contact":"Vicky Boudouni","country":"Greece","email":"vboudouni@amynanet.gr","phone":"+30 210 360 5100","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-07"},{"id":60,"company":"HELLENIC NATIONAL DEFENCE GENERAL STAFF","contact":"Major General Spyridon Karoumpalis","country":"Greece","email":"s.karoumpalis@hndgs.mil.gr","phone":"(+30) 210 657 6301","source":"Unspecified","campaign":"No campaign","interest":"Defense","created":"2025-05-07"}]},"Tal David":{"total":13,"country":{"Greece":5,"Israel":2,"Unknown":2,"Germany":2,"India":1,"Cyprus":1},"source":{"Unspecified":10,"Website Form":3},"campaign":{"No campaign":10,"Defense HE \u2013 Tal David":3},"leads":[{"id":270,"company":"","contact":"\u05d9\u05d0\u05d9\u05e8 \u05dc\u05d6\u05e8","country":"Israel","email":"yair@noteya.com","phone":"0544930161","source":"Website Form","campaign":"Defense HE \u2013 Tal David","interest":"","created":"2026-06-25"},{"id":269,"company":"","contact":"\u05d3\u05d5\u05d3 \u05e9\u05d7\u05e8","country":"Unknown","email":"dshr2878@gmail.com","phone":"0522010000","source":"Website Form","campaign":"Defense HE \u2013 Tal David","interest":"","created":"2026-06-25"},{"id":268,"company":"","contact":"\u05d0\u05d9\u05d2\u05d5\u05e8 \u05d2\u05d1\u05e8\u05d9\u05dc\u05d5\u05d1","country":"Israel","email":"gavrilovigor976@gmail.com","phone":"+972549740745","source":"Website Form","campaign":"Defense HE \u2013 Tal David","interest":"","created":"2026-06-25"},{"id":83,"company":"Rohde & Schwarz International GmbH","contact":"STEFAN ROESEL","country":"Germany","email":"stefan.roesel@rohde-schwarz.com","phone":"","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-08"},{"id":77,"company":"TATA ADVANCED SYSTEMS LIMITED","contact":"Vinod Yadav","country":"India","email":"vyadav@tataadvancedsystems.com","phone":"+91 22 6751 3630","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-08"},{"id":76,"company":"Eight Bells LTD","contact":"loannis GIANNOULAKIS","country":"Cyprus","email":"giannoul@8bellsresearch.com","phone":"+357 22550029","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-08"},{"id":73,"company":"Eight Bells LTD","contact":"Nikolaos KONTOPIDIS","country":"Greece","email":"nikos.kontopidis@8bellsresearch.com","phone":"+30 2106444553","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-08"},{"id":69,"company":"F.NOUS TECHNOLOG Y","contact":"Manolis Fountoulakis","country":"Greece","email":"info@fnous.technology","phone":"+306945449309","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-08"},{"id":51,"company":"Eight Bells Hellas P.C.","contact":"Antonios CHALAKATEVAKIS","country":"Greece","email":"antonios.chalakatevakis@8bellshellas.com","phone":"+30 2106444553","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense, Intelligence","created":"2025-05-06"},{"id":50,"company":"Eight Bells Hellas P.C.","contact":"Dimitrios KOUKKOS","country":"Greece","email":"dimitrios.koukkos@8bellsresearch.com","phone":"+30 2106444553","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense, Intelligence","created":"2025-05-06"},{"id":49,"company":"Eight Bells LTD","contact":"Stelios MPOURLOS","country":"Greece","email":"stelios.mpourlos@8bellsresearch.com","phone":"+30 2106444553","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense, Intelligence","created":"2025-05-06"},{"id":47,"company":"IEA TECHNOLOGIES","contact":"Asparuh Karastoyanov","country":"Unknown","email":"office@ieatechnologies.eu","phone":"+359 888 55 3020","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense, Intelligence","created":"2025-05-06"},{"id":43,"company":"Chrosziel","contact":"Raphael Farkas","country":"Germany","email":"raphael.farkas@chrosziel.com","phone":"+49 89 901 091-35","source":"Unspecified","campaign":"No campaign","interest":"HLS, Defense","created":"2025-05-06"}]}}};
-var S=D.summary,OD=D.owner_data,OWNERS=D.owners;
-var AC=S.all_campaigns;
-var activeCamps=new Set(AC),chOpen=false;
-var curOwner='',curLeads=[],selIds=new Set();
+var S=D.summary,OD=D.owner_data,OWNERS=D.owners,AC=S.all_campaigns;
+var activeCamps=new Set(AC),chOpen=false,curOwner='',curLeads=[],selIds=new Set();
 var df=document.getElementById('df'),dt=document.getElementById('dt');
 
-document.getElementById('gd').textContent=new Date(S.generated+'T12:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
-document.getElementById('tot').textContent=S.total;
+document.getElementById('gd').textContent=new Date(S.generated+'T12:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+document.getElementById('tot').textContent=S.total+' leads';
 df.value='2026-01-01'; dt.value=S.max_date;
 
 var osel=document.getElementById('osel');
 OWNERS.forEach(function(o){var x=document.createElement('option');x.value=o;x.textContent=o;osel.appendChild(x);});
 
-/* URL state */
-function enc(){
-  var p=new URLSearchParams();
-  if(curOwner)p.set('o',curOwner);
-  if(df.value)p.set('f',df.value);
-  if(dt.value)p.set('t',dt.value);
-  var cs=Array.from(activeCamps).sort().join('|');
-  var as=AC.slice().sort().join('|');
-  if(cs!==as)p.set('c',cs);
-  return p.toString();
-}
-function dec(){
-  var h=window.location.hash.slice(1);if(!h)return;
-  var p=new URLSearchParams(h);
-  if(p.get('o')){osel.value=p.get('o');applyPill(p.get('o'));curOwner=p.get('o');}
-  if(p.get('f'))df.value=p.get('f');
-  if(p.get('t'))dt.value=p.get('t');
-  if(p.get('c'))activeCamps=new Set(p.get('c').split('|'));
-}
-window.cpLink=function(){
-  var url=location.href.split('#')[0]+'#'+enc();
-  navigator.clipboard.writeText(url).then(function(){
-    var e=document.getElementById('cp');e.style.display='block';
-    setTimeout(function(){e.style.display='none';},2500);
-  });
-};
-
-/* Owner */
 function applyPill(n){var e=document.getElementById('opill');if(n){e.classList.add('show');document.getElementById('pname').textContent=n;}else e.classList.remove('show');}
 window.onOwner=function(){curOwner=osel.value;applyPill(curOwner);selIds=new Set();render();};
 window.clearOwner=function(){osel.value='';curOwner='';applyPill('');selIds=new Set();render();};
 
-/* Date */
 window.setQ=function(type,btn){
   document.querySelectorAll('.qb').forEach(function(b){b.classList.remove('on');});
   if(btn)btn.classList.add('on');
@@ -264,29 +311,22 @@ window.setQ=function(type,btn){
 df.addEventListener('change',function(){document.querySelectorAll('.qb').forEach(function(b){b.classList.remove('on');});selIds=new Set();render();});
 dt.addEventListener('change',function(){document.querySelectorAll('.qb').forEach(function(b){b.classList.remove('on');});selIds=new Set();render();});
 
-/* Campaign chips */
 function buildChips(){
   var wrap=document.getElementById('chips');wrap.innerHTML='';
   AC.forEach(function(c){
     var d=document.createElement('div');
     d.className='chip'+(activeCamps.has(c)?' on':'');
-    d.appendChild(document.createTextNode(c+' '));
-    var sp=document.createElement('span');sp.className='cn';
-    sp.textContent='('+((S.campaign[c])||0)+')';
-    d.appendChild(sp);d.dataset.camp=c;
-    d.addEventListener('click',function(){
-      var n=this.dataset.camp;
-      activeCamps.has(n)?activeCamps.delete(n):activeCamps.add(n);
-      this.classList.toggle('on');selIds=new Set();render();
-    });
+    var nm=document.createElement('span');nm.className='chip-name';nm.textContent=c;
+    var nb=document.createElement('span');nb.className='chip-n';nb.textContent=S.campaign[c]||0;
+    d.appendChild(nm);d.appendChild(nb);d.dataset.camp=c;
+    d.addEventListener('click',function(){var n=this.dataset.camp;activeCamps.has(n)?activeCamps.delete(n):activeCamps.add(n);this.classList.toggle('on');selIds=new Set();render();});
     wrap.appendChild(d);
   });
 }
 window.selAll=function(){activeCamps=new Set(AC);buildChips();selIds=new Set();render();};
 window.selNone=function(){activeCamps=new Set();buildChips();selIds=new Set();render();};
-window.tglChips=function(){chOpen=!chOpen;document.getElementById('chips').classList.toggle('open',chOpen);document.getElementById('showm').textContent=chOpen?'Show less':'Show all campaigns';};
+window.tglChips=function(){chOpen=!chOpen;document.getElementById('chips').classList.toggle('collapsed',!chOpen);document.getElementById('campToggle').textContent=chOpen?'\u25b2 Show less':'\u25bc Show all';};
 
-/* Helpers */
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function bars(id,obj,clrFn){
   var entries=Object.entries(obj).sort(function(a,b){return b[1]-a[1];});
@@ -294,148 +334,83 @@ function bars(id,obj,clrFn){
   document.getElementById(id).innerHTML=entries.map(function(e){
     var n=e[0],v=e[1],c=typeof clrFn==='function'?clrFn(n):clrFn;
     return '<div class="brow"><div class="bnm" title="'+esc(n)+'">'+esc(n)+'</div><div class="btr"><div class="bfi" style="width:'+(v/mx*100).toFixed(0)+'%;background:'+c+'"></div></div><div class="bvl">'+v+'</div></div>';
-  }).join('');
+  }).join('')||'<div style="color:var(--mute);font-size:12px;padding:8px 0">No data</div>';
 }
 function sbadge(s){
   if(!s||s==='Unspecified')return '<span class="badge bgr">\u2014</span>';
   if(s==='LinkedIn Campaign')return '<span class="badge bn">LinkedIn</span>';
   return '<span class="badge bl">'+esc(s)+'</span>';
 }
-
-/* Selection */
-function updSel(){
-  var n=selIds.size,si=document.getElementById('si'),dl=document.getElementById('dlsel');
-  if(n>0){si.textContent=n+' selected';si.classList.add('show');dl.style.display='inline-flex';}
-  else{si.classList.remove('show');dl.style.display='none';}
-}
+function updSel(){var n=selIds.size,si=document.getElementById('si'),dl=document.getElementById('dlsel');if(n>0){si.textContent=n+' selected';si.classList.add('show');dl.style.display='inline-flex';}else{si.classList.remove('show');dl.style.display='none';}}
 window.tglRow=function(chk,id){if(chk.checked)selIds.add(id);else selIds.delete(id);chk.closest('tr').classList.toggle('sel',chk.checked);updSel();};
-window.mTgl=function(chk){
-  document.querySelectorAll('#tblbody tr:not([style*="none"]) input[type=checkbox]').forEach(function(c){
-    c.checked=chk.checked;var id=parseInt(c.dataset.id);chk.checked?selIds.add(id):selIds.delete(id);c.closest('tr').classList.toggle('sel',chk.checked);
-  });updSel();
-};
-window.tglAll=function(){
-  var all=document.querySelectorAll('#tblbody tr:not([style*="none"]) input[type=checkbox]');
-  var allOn=Array.from(all).every(function(c){return c.checked;});
-  all.forEach(function(c){c.checked=!allOn;var id=parseInt(c.dataset.id);!allOn?selIds.add(id):selIds.delete(id);c.closest('tr').classList.toggle('sel',!allOn);});
-  document.getElementById('mchk').checked=!allOn;updSel();
-};
-
-/* Export */
-function toCSV(rows){
-  var h=['ID','Company','Contact','Country','Email','Phone','Source','Campaign','Interest','Created'];
-  return [h.join(',')].concat(rows.map(function(r){
-    return [r.id,r.company,r.contact,r.country,r.email,r.phone,r.source,r.campaign,r.interest,r.created].map(function(v){return '"'+String(v||'').replace(/"/g,'""')+'"';}).join(',');
-  })).join('\n');
-}
+window.mTgl=function(chk){document.querySelectorAll('#tblbody tr:not([style*="none"]) input[type=checkbox]').forEach(function(c){c.checked=chk.checked;var id=parseInt(c.dataset.id);chk.checked?selIds.add(id):selIds.delete(id);c.closest('tr').classList.toggle('sel',chk.checked);});updSel();};
+window.tglAll=function(){var all=document.querySelectorAll('#tblbody tr:not([style*="none"]) input[type=checkbox]');var allOn=Array.from(all).every(function(c){return c.checked;});all.forEach(function(c){c.checked=!allOn;var id=parseInt(c.dataset.id);!allOn?selIds.add(id):selIds.delete(id);c.closest('tr').classList.toggle('sel',!allOn);});document.getElementById('mchk').checked=!allOn;updSel();};
+function toCSV(rows){var h=['ID','Company','Contact','Country','Email','Phone','Source','Campaign','Interest','Created'];return[h.join(',')].concat(rows.map(function(r){return[r.id,r.company,r.contact,r.country,r.email,r.phone,r.source,r.campaign,r.interest,r.created].map(function(v){return'"'+String(v||'').replace(/"/g,'""')+'"';}).join(',');})).join('\n');}
 function dlCSV(c,n){var b=new Blob(['\uFEFF'+c],{type:'text/csv;charset=utf-8;'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=n;a.click();}
 window.dlAll=function(){dlCSV(toCSV(curLeads),(curOwner||'MER').replace(/[^a-z0-9]/gi,'_')+'_leads.csv');};
 window.dlSel=function(){dlCSV(toCSV(curLeads.filter(function(r){return selIds.has(r.id);})),'selected_leads.csv');};
-
-/* Table search filter */
-window.ftbl=function(){
-  var s=(document.getElementById('tsrch').value||'').toLowerCase();
-  var c=document.getElementById('tctr').value;
-  var rows=document.querySelectorAll('#tblbody tr'),vis=0;
-  rows.forEach(function(row){
-    var id=parseInt(row.dataset.id);
-    var r=curLeads.find(function(x){return x.id===id;});
-    if(!r){row.style.display='none';return;}
-    var ok=(!s||(r.company+r.contact+r.email).toLowerCase().indexOf(s)>=0)&&(!c||r.country===c);
-    row.style.display=ok?'':'none';if(ok)vis++;
-  });
-  document.getElementById('tfc').textContent=vis+' lead'+(vis!==1?'s':'');updSel();
-};
+window.ftbl=function(){var s=(document.getElementById('tsrch').value||'').toLowerCase(),c=document.getElementById('tctr').value,rows=document.querySelectorAll('#tblbody tr'),vis=0;rows.forEach(function(row){var id=parseInt(row.dataset.id),r=curLeads.find(function(x){return x.id===id;});if(!r){row.style.display='none';return;}var ok=(!s||(r.company+r.contact+r.email).toLowerCase().indexOf(s)>=0)&&(!c||r.country===c);row.style.display=ok?'':'none';if(ok)vis++;});document.getElementById('tfc').textContent=vis+' lead'+(vis!==1?'s':'');updSel();};
 window.clrTbl=function(){document.getElementById('tsrch').value='';document.getElementById('tctr').value='';ftbl();};
 
-/* Main render */
 function render(){
-  var from=df.value||S.min_date, to=dt.value||S.max_date;
-  var isOwner=!!curOwner;
-
-  /* filter all leads by date + campaign */
-  var allLeads=[];
-  OWNERS.forEach(function(o){if(OD[o])OD[o].leads.forEach(function(r){allLeads.push(r);});});
-  var seen={};allLeads=allLeads.filter(function(r){if(seen[r.id])return false;seen[r.id]=true;return true;});
-
-  /* Apply filters */
+  var from=df.value||S.min_date,to=dt.value||S.max_date,isOwner=!!curOwner;
+  var allLeads=[],seen={};
+  OWNERS.forEach(function(o){if(OD[o])OD[o].leads.forEach(function(r){if(!seen[r.id]){seen[r.id]=true;allLeads.push(r);}});});
   var filtered=allLeads.filter(function(r){
     var dateOk=(!from||!r.created||r.created>=from)&&(!to||!r.created||r.created<=to);
     var campOk=activeCamps.has(r.campaign||'No campaign');
     return dateOk&&campOk;
   });
-  if(isOwner)filtered=filtered.filter(function(r){
-    var ownerLeads=OD[curOwner]?OD[curOwner].leads:[];
-    return ownerLeads.some(function(x){return x.id===r.id;});
-  });
+  if(isOwner)filtered=filtered.filter(function(r){return OD[curOwner]&&OD[curOwner].leads.some(function(x){return x.id===r.id;});});
   curLeads=filtered;
-
   var n=filtered.length;
-  document.getElementById('fc').textContent=n+' lead'+(n!==1?'s':'')+' shown';
+
+  document.getElementById('fc').textContent=n+' lead'+(n!==1?'s':'')+' match current filters';
   document.getElementById('tbltt').textContent=isOwner?curOwner+"'s Leads":'All Leads';
   document.getElementById('ownercard').style.display=isOwner?'none':'';
 
-  /* KPIs */
-  var wa=filtered.filter(function(r){
-    var ownerLeads=[];
-    OWNERS.forEach(function(o){if(OD[o])OD[o].leads.forEach(function(x){if(x.id===r.id)ownerLeads.push(o);});});
-    return ownerLeads.length>0;
-  }).length;
+  var wa=filtered.filter(function(r){return OWNERS.some(function(o){return OD[o]&&OD[o].leads.some(function(x){return x.id===r.id;});});}).length;
   var ctrs=new Set(filtered.map(function(r){return r.country;}).filter(Boolean)).size;
   var cps=new Set(filtered.map(function(r){return r.campaign;}).filter(function(c){return c&&c!=='No campaign';})).size;
-  document.getElementById('kpis').innerHTML=[
-    {v:n,l:'Leads in view',s:'matching current filters',c:'g'},
-    {v:wa,l:'Assigned to owner',s:Math.round(wa/Math.max(n,1)*100)+'% of total',c:'c'},
-    {v:n-wa,l:'Pending assignment',s:'not yet assigned',c:'o'},
-    {v:ctrs,l:'Countries reached',s:cps+' campaign'+(cps!==1?'s':''),c:''},
-  ].map(function(k){return '<div class="kpi"><div class="kn '+k.c+'">'+k.v+'</div><div class="kl">'+k.l+'</div><div class="ks">'+k.s+'</div></div>';}).join('');
 
-  /* Charts from filtered data */
+  document.getElementById('kpis').innerHTML=[
+    {v:n,l:'Leads in View',s:'matching current filters',c:'g',i:'📊'},
+    {v:wa,l:'Assigned to Owner',s:Math.round(wa/Math.max(n,1)*100)+'% of total',c:'c',i:'👤'},
+    {v:n-wa,l:'Pending Assignment',s:'not yet assigned',c:'o',i:'⏳'},
+    {v:ctrs,l:'Countries Reached',s:cps+' active campaign'+(cps!==1?'s':''),c:'d',i:'🌍'},
+  ].map(function(k){return '<div class="kpi '+k.c+'"><div class="kpi-icon">'+k.i+'</div><div class="kn">'+k.v+'</div><div class="kl">'+k.l+'</div><div class="ks">'+k.s+'</div></div>';}).join('');
+
   function cntF(key,top){var m={};filtered.forEach(function(r){var v=r[key]||'Unknown';m[v]=(m[v]||0)+1;});return Object.fromEntries(Object.entries(m).sort(function(a,b){return b[1]-a[1];}).slice(0,top||10));}
   bars('cbars',cntF('country',12),'#00B7FA');
   bars('sbars',cntF('source',8),function(n){return n==='Unspecified'?'#1E3060':'#7B5FC4';});
-  bars('cmpbars',cntF('campaign',10),function(n){return n==='No campaign'?'#1E3060':'#00D67E';});
+  bars('cmpbars',cntF('campaign',10),function(n){return n==='No campaign'?'#1C2E55':'#00D67E';});
+  if(!isOwner){var om={};filtered.forEach(function(r){OWNERS.forEach(function(o){if(OD[o]&&OD[o].leads.some(function(x){return x.id===r.id;}))om[o]=(om[o]||0)+1;});});bars('obars',Object.fromEntries(Object.entries(om).sort(function(a,b){return b[1]-a[1];}).slice(0,10)),'#00B7FA');}
 
-  if(!isOwner){
-    var om={};filtered.forEach(function(r){
-      OWNERS.forEach(function(o){if(OD[o]&&OD[o].leads.some(function(x){return x.id===r.id;}))om[o]=(om[o]||0)+1;});
-    });
-    bars('obars',Object.fromEntries(Object.entries(om).sort(function(a,b){return b[1]-a[1];}).slice(0,10)),'#00B7FA');
-  }
-
-  /* Timeline */
   var mo={};filtered.forEach(function(r){if(r.created){var m=r.created.slice(0,7);mo[m]=(mo[m]||0)+1;}});
   var ms=Object.keys(mo).sort(),mx=Math.max.apply(null,Object.values(mo).concat([1]));
-  document.getElementById('tl').innerHTML=ms.map(function(m){return '<div class="tlr"><div class="tld">'+m+'</div><div class="tlt"><div class="tlb" style="width:'+(mo[m]/mx*100).toFixed(0)+'%"></div></div><div class="tlv">'+mo[m]+'</div></div>';}).join('');
+  document.getElementById('tl').innerHTML=ms.map(function(m){return '<div class="tlr"><div class="tld">'+m+'</div><div class="tlt"><div class="tlb" style="width:'+(mo[m]/mx*100).toFixed(0)+'%"></div></div><div class="tlv">'+mo[m]+'</div></div>';}).join('')||'<div style="color:var(--mute);font-size:12px">No data</div>';
 
-  /* Country dropdown for table filter */
   var allCtrs=filtered.map(function(r){return r.country;}).filter(function(c,i,a){return c&&c!=='Unknown'&&a.indexOf(c)===i;}).sort();
-  var tc=document.getElementById('tctr'),pv=tc.value;
-  tc.innerHTML='<option value="">All countries</option>';
-  allCtrs.forEach(function(c){var o=document.createElement('option');o.value=c;o.textContent=c;tc.appendChild(o);});
-  if(allCtrs.indexOf(pv)>=0)tc.value=pv;
+  var tc=document.getElementById('tctr'),pv=tc.value;tc.innerHTML='<option value="">All countries</option>';allCtrs.forEach(function(c){var o=document.createElement('option');o.value=c;o.textContent=c;tc.appendChild(o);});if(allCtrs.indexOf(pv)>=0)tc.value=pv;
 
-  /* Table */
   document.getElementById('mchk').checked=false;
-  document.getElementById('tblbody').innerHTML=filtered.map(function(r,i){
+  document.getElementById('tblbody').innerHTML=filtered.length?filtered.map(function(r,i){
     var chk=selIds.has(r.id);
     return '<tr data-id="'+r.id+'" class="'+(chk?'sel':'')+'">'
-      +'<td style="padding-left:12px"><input type="checkbox" data-id="'+r.id+'" '+(chk?'checked ':'')+'onchange="tglRow(this,'+r.id+')"></td>'
+      +'<td style="padding-left:14px"><input type="checkbox" data-id="'+r.id+'" '+(chk?'checked ':'')+'onchange="tglRow(this,'+r.id+')"></td>'
       +'<td class="nc">'+(i+1)+'</td>'
       +'<td class="co"><b>'+esc(r.company||'\u2014')+'</b><small>'+esc(r.contact||'')+'</small></td>'
       +'<td>'+(r.email?'<a class="em" href="mailto:'+esc(r.email)+'" title="'+esc(r.email)+'">'+esc(r.email)+'</a>':'<span style="color:var(--mute)">\u2014</span>')+(r.phone?'<span class="ph">'+esc(r.phone)+'</span>':'')+'</td>'
-      +'<td>'+esc(r.country||'\u2014')+'</td>'
-      +'<td>'+sbadge(r.source)+'</td>'
+      +'<td>'+esc(r.country||'\u2014')+'</td><td>'+sbadge(r.source)+'</td>'
       +'<td style="font-size:11.5px;color:var(--soft);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+esc(r.campaign)+'">'+esc(r.campaign==='No campaign'?'\u2014':r.campaign||'\u2014')+'</td>'
       +'<td style="font-size:11.5px;color:var(--soft);max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(r.interest||'\u2014')+'</td>'
-      +'<td style="font-size:11.5px;color:var(--mute);white-space:nowrap">'+esc(r.created||'\u2014')+'</td>'
-      +'</tr>';
-  }).join('');
+      +'<td style="font-size:11.5px;color:var(--mute);white-space:nowrap">'+esc(r.created||'\u2014')+'</td></tr>';
+  }).join(''):'<tr class="empty-row"><td colspan="9">No leads match the current filters</td></tr>';
   document.getElementById('tfc').textContent=filtered.length+' lead'+(filtered.length!==1?'s':'');
   updSel();ftbl();
 }
 
-buildChips();dec();render();
+buildChips();render();
 </script>
 </body>
 </html>
